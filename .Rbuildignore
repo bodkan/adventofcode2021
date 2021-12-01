@@ -1,0 +1,4 @@
+^renv$
+^renv\.lock$
+^adventofcode2021\.Rproj$
+^\.Rproj\.user$

@@ -15,7 +15,7 @@ writeLines(test_input, test_file)
 depths <- read_depths(test_file)
 
 # test part 1
-expect_equal(7,  depths %>% detect_increases() %>% sum())
+expect_equal(7,  depths |> detect_increases() |> sum())
 
 # test part 2
-expect_equal(5,  depths %>% window_depths(window_size = 3) %>% detect_increases() %>% sum())
+expect_equal(5,  depths |> window_depths(window_size = 3) |> detect_increases() |> sum())

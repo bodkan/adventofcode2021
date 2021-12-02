@@ -84,11 +84,11 @@ submarine <- function(location = c(0, 0), aim = 0, mode = c("v1", "v2")) {
   next_move <- if (mode == "v1") next_move_v1 else next_move_v2
 
   # return the constructed "object" as a list of its methods
-  invisible(list(
+  list(
     load_program = load_program,
     next_instruction = next_instruction,
     print_program = print_program,
     execute_program = execute_program,
     get_location = get_location
-  ))
+  )
 }

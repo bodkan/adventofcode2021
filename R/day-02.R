@@ -1,4 +1,10 @@
+#' Closure-based implementation of a submarine "object"
+#'
+#' The function acts as a "constructor" which returns a closure capturing
+#' all "properties" of the object and returns a list of functions acting as
+#' its "methods".
 submarine <- function(location = c(0, 0), aim = 0, mode = c("v1", "v2")) {
+  # the mode argument acts as a switch between the two submarine specifications
   mode <- match.arg(mode)
 
   location <- location

@@ -7,13 +7,6 @@ submarine <- function(location = c(0, 0), aim = 0, mode = c("v1", "v2")) {
   # the mode argument acts as a switch between the two submarine specifications
   mode <- match.arg(mode)
 
-  # variable tracking the current position of the submarine
-  location <- location
-
-  # list of instructions of a program and the index of the current instruction
-  program <- list()
-  index <- 1
-
   #
   # "public methods"
   #
@@ -29,6 +22,8 @@ submarine <- function(location = c(0, 0), aim = 0, mode = c("v1", "v2")) {
         list(direction = tokens[1], step = as.integer(tokens[2]))
       })
     program <<- instructions
+    index <<- 1
+
     invisible(NULL)
   }
 

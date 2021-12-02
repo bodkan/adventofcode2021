@@ -3,17 +3,17 @@ test_file <- tempfile()
 writeLines(test_input, test_file)
 
 test_that("Day 2 part 1 adheres to the specification", {
-  sub <- submarine()
+  sub <- submarine(mode = "v1")
   sub$load_program(test_file)
   sub$execute_program()
   location <- sub$get_location()
-  expect_true(prod(location) == 150)
+  expect_true(abs(prod(location)) == 150)
 })
 
 test_that("Day 2 part 2 adheres to the specification", {
-  sub <- submarine2()
+  sub <- submarine(mode = "v2")
   sub$load_program(test_file)
   sub$execute_program()
   location <- sub$get_location()
-  expect_true(prod(location) == 900)
+  expect_true(abs(prod(location)) == 900)
 })

@@ -7,14 +7,22 @@ submarine <- function(location = c(0, 0), aim = 0, mode = c("v1", "v2")) {
   # the mode argument acts as a switch between the two submarine specifications
   mode <- match.arg(mode)
 
+  # variable tracking the current position of the submarine
   location <- location
-  aim <- aim
 
+  # list of instructions of a program and the index of the current instruction
   program <- list()
   index <- 1
 
+  #
   # "public methods"
+  #
+
+  # Load the submarine program from a given file
   load_program <- function(file) {
+    # parse the file of submarine movement instructions -- one instruction per line,
+    # each instruction in the form of:
+    #   <"forward" | "up" | "down"> <integer number>
     instructions <- readLines(file) |>
       lapply(\(instruction) {
         tokens <- strsplit(instruction, " ")[[1]]
@@ -24,6 +32,7 @@ submarine <- function(location = c(0, 0), aim = 0, mode = c("v1", "v2")) {
     invisible(NULL)
   }
 
+  # Execute the next instruction in the program
   next_instruction <- function() {
     if (index > length(program)) {
       cat("No instructions left\n")
@@ -39,6 +48,7 @@ submarine <- function(location = c(0, 0), aim = 0, mode = c("v1", "v2")) {
     index <<- index + 1
   }
 
+  # Print the entire program in a readable form
   print_program <- function() {
     for (i in seq(index, length(program))) {
       direction <-  program[[i]]$direction
@@ -47,15 +57,22 @@ submarine <- function(location = c(0, 0), aim = 0, mode = c("v1", "v2")) {
     }
   }
 
+  # Execute the entire program, one instruction at a time
   execute_program <- function() {
     for (i in seq_along(program)) {
       next_instruction()
     }
   }
 
+  # Return the current location of the submarine in two dimensions
+  # (horizontal coordinate, depth)
   get_location <- function() location
 
+  #
   # "private methods"
+  #
+
+  # First version of the move method utilizing only horizontal
   next_move_v1 <- function(direction, step) {
     if (direction == "forward")
       move <- c(step, 0)

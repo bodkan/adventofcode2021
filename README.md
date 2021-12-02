@@ -12,4 +12,6 @@ requirements given by each puzzle specification, using provided testing data. Fi
 
 **Why on Earth would you use R for this?**
 
-Several reasons. First, R is my favourite programming language. Yes, I said it. I spend nearly all of my time doing data analysis and research&mdash;nearly everything is a (gigantic) table, most of my output are figures and fitted statistical models. Advent of Code presents a very different class of problems that I almost never work with and it seemed like a fun challenge trying to solve them in R. Moreover, I deliberately decided to only use features available in base R 4.x and greater without any additional packages (again, something that is quite unusual when working with R).
+Several reasons. First, R is my favourite programming language. Yes, I said it.
+
+Second, I spend nearly all of my time doing data analysis and research&mdash;nearly everything is a (gigantic) table, most of my output are figures and fitted statistical models. Advent of Code presents a very different class of problems that I almost never work with and it seemed like a fun challenge trying to solve them in R. Moreover, I deliberately decided to only use features available in base R 4.x and greater without any additional packages (again, something that is quite unusual when working with R).

@@ -3,6 +3,9 @@
 #' The function acts as a "constructor" which returns a closure capturing
 #' all "properties" of the object and returns a list of functions acting as
 #' its "methods".
+#'
+#' Inspired by the following post:
+#'   https://win-vector.com/2015/03/27/using-closures-as-objects-in-r/
 submarine <- function(location = c(0, 0), aim = 0, mode = c("v1", "v2")) {
   # the mode argument acts as a switch between the two submarine specifications
   mode <- match.arg(mode)

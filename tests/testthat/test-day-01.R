@@ -14,10 +14,10 @@ writeLines(test_input, test_file)
 
 depths <- read_depths(test_file)
 
-test_that("Day 1 part 1 adheres to the specification", {
+test_that(test_name(day = 1, part = 1), {
   expect_equal(7,  depths |> detect_increases() |> sum())
 })
 
-test_that("Day 1 part 2 adheres to the specification", {
+test_that(test_name(day = 1, part = 2), {
   expect_equal(5,  depths |> window_depths(window_size = 3) |> detect_increases() |> sum())
 })

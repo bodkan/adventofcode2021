@@ -6,16 +6,14 @@ m <- read_matrix(input_file)
 
 gamma <- compute_gamma_rate(m)
 epsilon <- compute_epsilon_rate(m)
-result_part1 <- gamma * epsilon
 
-cat("Day 3 puzzle -- part 1 result: ", result_part1)
+part1 <- gamma * epsilon
 
-cat("\n")
+print_result(day = 3, part = 1, part1)
 
 oxygen <- compute_oxygen_rating(m)
 co2 <- compute_co2_rating(m)
-result_part2 <- oxygen * co2
 
-cat("Day 2 puzzle -- part 2 result: ", result_part2)
+part2 <- oxygen * co2
 
-cat("\n-------\n")
+print_result(day = 3, part = 2, part2)

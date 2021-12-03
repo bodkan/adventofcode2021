@@ -16,14 +16,14 @@ writeLines(test_input, test_file)
 
 m <- read_matrix(test_file)
 
-test_that("Day 3 part 1 adheres to the specification", {
+test_that(test_name(day = 3, part = 1), {
   gamma <- compute_gamma_rate(m)
   epsilon <- compute_epsilon_rate(m)
 
   expect_true(gamma * epsilon == 198)
 })
 
-test_that("Day 3 part 2 adheres to the specification", {
+test_that(test_name(day = 3, part = 2), {
   oxygen_rating <- compute_oxygen_rating(m)
   co2_rating <- compute_co2_rating(m)
 

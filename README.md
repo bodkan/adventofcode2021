@@ -10,7 +10,13 @@ requirements given by each puzzle specification, using provided testing data. Fi
 `inst/` contains R scripts which solve the full puzzle using data stored under
 `inst/extdata`.
 
-**Why on Earth would you use R for this?**
+### Solutions
+
+- [Day 1](R/day-01.R)
+- [Day 2](R/day-02.R)
+- [Day 3](R/day-03.R)
+
+### Why on Earth would you use R for this?
 
 Several reasons. First, R is my favourite programming language. Yes, I said it.
 

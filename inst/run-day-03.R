@@ -19,3 +19,7 @@ part2 <- oxygen * co2
 print_result(day = 3, part = 2, part2)
 
 print_sep()
+
+source("inst/answers.R", local = TRUE)
+stopifnot(answers["3-1"] == part1)
+stopifnot(answers["3-2"] == part2)

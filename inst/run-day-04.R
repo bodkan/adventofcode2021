@@ -13,3 +13,7 @@ part2 <- solve_bingo(input_bingo$draws, input_bingo$bingos, find = "last")
 print_result(day = 4, part = 2, part2)
 
 print_sep()
+
+source("inst/answers.R", local = TRUE)
+stopifnot(answers["4-1"] == part1)
+stopifnot(answers["4-2"] == part2)

@@ -31,6 +31,8 @@ solve_bingo <- function(draws, bingos, find = c("first", "last")) {
   # are we looking for the first solved bingo or the last?
   find <- match.arg(find)
 
+  # because all bingo squares are stored in a single three-dimensional array,
+  # the size of the third dimension determines the total number of squares
   n_bingos <- dim(bingos)[3]
 
   # create a logical "mask" of positions with numbers that have

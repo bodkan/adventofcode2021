@@ -21,9 +21,11 @@ test_file <- create_test_file("7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12
 test_input <- read_bingo(test_file)
 
 test_that(test_name(day = 4, part = 1), {
-  expect_true(solve_bingo(test_input$draws, test_input$bingos) == 4512)
+  result <- solve_bingo(test_input$draws, test_input$bingos, find = "first")
+  expect_true(result == 4512)
 })
 
 test_that(test_name(day = 4, part = 2), {
-  expect_true(solve_bingo2(test_input$draws, test_input$bingos) == 1924)
+  result <- solve_bingo(test_input$draws, test_input$bingos, find = "last")
+  expect_true(result == 1924)
 })

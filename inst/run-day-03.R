@@ -10,6 +10,7 @@ epsilon <- compute_epsilon_rate(m)
 part1 <- gamma * epsilon
 
 print_result(day = 3, part = 1, part1)
+check_answer(day = 3, part = 1, part1)
 
 oxygen <- compute_oxygen_rating(m)
 co2 <- compute_co2_rating(m)
@@ -17,9 +18,6 @@ co2 <- compute_co2_rating(m)
 part2 <- oxygen * co2
 
 print_result(day = 3, part = 2, part2)
+check_answer(day = 3, part = 2, part2)
 
 print_sep()
-
-source("inst/answers.R", local = TRUE)
-stopifnot(answers["3-1"] == part1)
-stopifnot(answers["3-2"] == part2)

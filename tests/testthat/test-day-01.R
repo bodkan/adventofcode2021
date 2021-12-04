@@ -1,5 +1,4 @@
-# generate test input file
-test_input <- "199
+test_file <- create_test_file("199
 200
 208
 210
@@ -8,9 +7,7 @@ test_input <- "199
 240
 269
 260
-263"
-test_file <- tempfile()
-writeLines(test_input, test_file)
+263")
 
 depths <- read_depths(test_file)
 

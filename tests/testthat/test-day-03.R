@@ -1,4 +1,4 @@
-test_input <- "00100
+test_file <- create_test_file("00100
 11110
 10110
 10111
@@ -9,10 +9,7 @@ test_input <- "00100
 10000
 11001
 00010
-01010"
-
-test_file <- tempfile()
-writeLines(test_input, test_file)
+01010")
 
 m <- read_matrix(test_file)
 

@@ -1,6 +1,6 @@
 Package: adventofcode2021
 Title: Collection of solutions to Advent of Code 2021
-Version: 42
+Version: 42.0
 Authors@R: 
     person(given = "Martin",
            family = "Petr",

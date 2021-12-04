@@ -67,7 +67,7 @@ solve_bingo <- function(draws, bingos, find = c("first", "last")) {
     if (!is.null(next_solved))
       solved <- c(solved, next_solved[!next_solved %in% solved])
 
-    if ((find == "first" && length(solved) > 0) ||
+    if ((find == "first" && length(solved) == 1) ||
         (find == "last" && length(solved) == n_bingos))
       break
   }

@@ -1,17 +1,21 @@
 read_bingo <- function(file) {
   lines <- readLines(file)
 
+  # read individual draws
   draws <- strsplit(lines[1], ",") |> (\(.) .[[1]])() |> as.integer()
 
+  # read numbers of all bingo squares into a single vector
   bingo_numbers <- lines[3:length(lines)] |>
     strsplit(" ") |>
     unlist() |>
     ( \(.) .[. != ""] )() |>
     as.integer()
 
-  # a single bingo square is always 5x5 in size, as per specification
+  # compute the number of 5x5 bingo squares in the input
   n_bingos <- length(bingo_numbers) / 25
 
+  # convert the bingo numbers into `n_bingos` 5x5 matrices (i.e.
+  # a three-dimensional array)
   bingos <- array(bingo_numbers, dim = c(5, 5, n_bingos)) |>
     aperm(perm = c(2, 1, 3))
 
@@ -51,7 +55,6 @@ solve_bingo2 <- function(draws, bingos) {
   solved <- c()
 
   for (number in draws) {
-    # if (number == 13) browser()
     marks <- marks | (bingos == number)
 
     col_marks <- colSums(marks, dims = 1)

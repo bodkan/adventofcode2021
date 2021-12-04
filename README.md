@@ -9,6 +9,7 @@ The "solutions as an R package" approach is modeled after [\@tjmahr](https://git
 - [Day 1 puzzle](https://adventofcode.com/2021/day/1) - [my solution](R/day-01.R)
 - [Day 2 puzzle](https://adventofcode.com/2021/day/2) - [my solution](R/day-02.R)
 - [Day 3 puzzle](https://adventofcode.com/2021/day/3) - [my solution](R/day-03.R)
+- [Day 4 puzzle](https://adventofcode.com/2021/day/4) - [my solution](R/day-04.R)
 
 ### Why on Earth would you use R for this?
 

@@ -17,3 +17,5 @@ co2 <- compute_co2_rating(m)
 part2 <- oxygen * co2
 
 print_result(day = 3, part = 2, part2)
+
+print_sep()

@@ -1,4 +1,8 @@
 #' Read coordinates of lines which indicate the position/direction of vents
+#'
+#' @param file Input file, one line for each start-end coordinate of a line
+#' @param ... Optional list of predicate function that can be applied to filter
+#'   the lines to only those of a given class
 read_lines <- function(file, ...) {
   lines <- readLines(file) |>
     strsplit(" -> ") |>

@@ -4,7 +4,8 @@ print_result <- function(day, part, result) {
 
 print_sep <- function() cat("-------\n")
 
-#' Double check solutions for full puzzle inputs
+#' Double check solutions for full puzzle inputs after refactoring
+#' and other retrospective code updates
 check_answer <- function(day, part, result) {
   answers <- list(
     "1-1" = 1400,

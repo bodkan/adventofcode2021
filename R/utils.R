@@ -14,7 +14,10 @@ check_answer <- function(day, part, result) {
     "3-1" = 4103154,
     "3-2" = 4245351,
     "4-1" = 31424,
-    "4-2" = 23042
+    "4-2" = 23042,
+    "5-1" = 6548,
+    "5-2" = 19663
   )
-  stopifnot(answers[sprintf("%d-%d", day, part)] == result)
+  if (answers[sprintf("%d-%d", day, part)] != result)
+    stop("Wrong answer for day ", day, " part ", part, call. = FALSE)
 }

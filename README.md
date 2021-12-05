@@ -17,3 +17,9 @@ The "solutions as an R package" approach is modeled after [\@tjmahr](https://git
 Several reasons. First, R is my favourite programming language. Yes, I said it.
 
 Second, I spend nearly all of my time doing data analysis and research—nearly everything I work with on a daily basis are (gigantic) tables, the usual output of my work are figures and statistical models. Advent of Code presents a very different class of problems that I rarely get to work with these days and it seemed like a fun challenge trying to solve them in R. Moreover, as an additional challenge and a character building experience I decided to restrict myself to only use features available in base R 4.x without any additional packages (again, something that is quite unusual when working with R).
+
+### Personal stats
+
+As you can see, I'm definitely not speed-running this one. 😎 🏖 🍹
+
+![image](https://user-images.githubusercontent.com/16516593/144749740-28e25343-2c2e-4dde-b88e-2ad5787d7074.png)

@@ -15,7 +15,7 @@ run_path="inst/run-${day}.R"
 
 curl -s https://adventofcode.com/2021/day/$1/input --cookie "session=$SESSION" -o ${input_path}
 
-if grep -q '404 Not Found' $input_path; then
+if grep -Eq '404 Not Found|endpoint' $input_path; then
     echo "Puzzle for the given day ${1} not found"
     rm $input_path
     exit 1

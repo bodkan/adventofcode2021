@@ -8,21 +8,23 @@ read_lanternfish <- function(file) {
 }
 
 simulate_lanternfish <- function(times, generations) {
+  n <- length(times)
+
   # indices into fish counter vector in R's 1-based coordinates
   reproducing <- 1
   reset <- 7
-  new <- 9
+  offspring <- 9
 
   for (gen in seq_len(generations)) {
     # get the number of reproducing fish in current generation
     n_reproducing <- times[reproducing]
 
     # shift the vector of times by one
-    times[-length(times)] <- times[2:length(times)]
+    times[-n] <- times[2:n]
 
     # reset fish which just reproduced and add new fish to the counter
     times[reset] <- times[reset] + n_reproducing
-    times[new] <- n_reproducing
+    times[offspring] <- n_reproducing
   }
 
   # return the count of all fish at the end of the simulation

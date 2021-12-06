@@ -1,6 +1,6 @@
 # Advent of Code 2021 in R
 
-This repository contains my solutions to the Advent of Code 2021 in R. My goal is to solve every puzzle using nothing else but base R functions and _without any data frames_ or data frame manipulation functions (matrices, n-dimensional arrays and linear algebra operations are OK).
+This repository contains my solutions to the [Advent of Code 2021](https://adventofcode.com/2021) in R. My goal is to solve every puzzle using nothing else but base R functions and _without any data frames_ or data frame manipulation functions (matrices, n-dimensional arrays and linear algebra operations are OK).
 
 The "solutions as an R package" method is inspired by [\@tjmahr](https://github.com/tjmahr/adventofcode17)'s approach to Advent of Code 2017. Briefly, each script under `R/` contains the functions needed to solve the puzzle on a given day. Unit tests under `tests/` verify that my solutions adhere to the requirements given by each puzzle specification, using the tiny testing data on the Advent of Code website. Finally, `inst/` contains small standalone R scripts which solve the full puzzles stored in text files under `inst/extdata` and output the results to the terminal. All are executed by a master script in `inst/run-all.R`.
 

@@ -11,6 +11,7 @@ The "solutions as an R package" approach is modeled after [\@tjmahr](https://git
 - [Day 3 puzzle](https://adventofcode.com/2021/day/3) - [my solution](R/day-03.R)
 - [Day 4 puzzle](https://adventofcode.com/2021/day/4) - [my solution](R/day-04.R)
 - [Day 5 puzzle](https://adventofcode.com/2021/day/5) - [my solution](R/day-05.R)
+- [Day 6 puzzle](https://adventofcode.com/2021/day/6) - [my solution](R/day-06.R)
 
 ### Why on Earth would you use R for this?
 
@@ -20,6 +21,6 @@ Second, I spend nearly all of my time doing data analysis and research—nearly 
 
 ### Personal stats
 
-As you can see, I'm definitely not speed-running this one. 😎 🏖 🍹
+I'm clearly not speed-running this one. 😎 🏖 🍹 Mostly working on these puzzles during breaks throughout the day.
 
-![image](https://user-images.githubusercontent.com/16516593/144749740-28e25343-2c2e-4dde-b88e-2ad5787d7074.png)
+![image](https://user-images.githubusercontent.com/16516593/144813799-3856f09d-758b-44cf-9290-34f357c81c9d.png)

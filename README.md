@@ -1,4 +1,4 @@
-# Advent of Code 2021 in R
+# 🎄 Advent of Code 2021 in R 🎄
 
 This repository contains my solutions to the [Advent of Code 2021](https://adventofcode.com/2021) in R. My goal is to solve every puzzle using nothing else but base R functions and _without any data frames_ or data frame manipulation functions (matrices, n-dimensional arrays and linear algebra operations are OK).
 

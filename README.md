@@ -24,4 +24,4 @@ Second, I spend nearly all time at my job doing data analysis and research&mdash
 
 I'm definitely not speed-running this. 😎 🏖 🍹 Mostly working on this during breaks throughout the day.
 
-![image](https://user-images.githubusercontent.com/16516593/144813799-3856f09d-758b-44cf-9290-34f357c81c9d.png)
+![image](https://user-images.githubusercontent.com/16516593/145014080-a91a2b05-9e59-448b-9b11-7da028e029d7.png)

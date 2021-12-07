@@ -2,4 +2,15 @@ read_crabs <- function(file) {
   scan(file, what = integer(), sep = ",", quiet = TRUE)
 }
 
-sum_fuel <- function(i) (1 + i) * i / 2
+#' Compute the fuel requirements to move all crabs to one of the given
+#' final positions in a vectorized way
+#'
+#' @param crabs Vector of integer positions of all crabs
+#' @param options Vector of potential final positions
+#' @param fuel_fun Function to transform the distances into fuel
+compute_fuel <- function(crabs, options, fuel_fun = identity) {
+  # TIL about `outer()` and it is amazing
+  colSums(fuel_fun(abs(outer(crabs, options, "-"))))
+}
+
+incremental_fuel <- function(i) (1 + i) * i / 2

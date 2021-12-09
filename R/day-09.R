@@ -13,9 +13,9 @@ shift <- function(m, direction = c("up", "down", "left", "right")) {
   new_col <- matrix(Inf, nrow = nrow(m))
 
   switch(direction,
-         up     = rbind(m[-1, ], new_row),
-         down   = rbind(new_row, m[-nrow(m), ]),
-         right  = cbind(m[, -1], new_col),
+         up    = rbind(m[-1, ], new_row),
+         down  = rbind(new_row, m[-nrow(m), ]),
+         right = cbind(m[, -1], new_col),
          left  = cbind(new_col, m[, -ncol(m)]))
 }
 

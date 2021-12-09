@@ -42,7 +42,7 @@ in_map <- function(p, m) {
 is_higher <- function(p_now, p_next, m) m[p_now] < m[p_next] && m[p_next] < 9
 
 # Recursively explore a given matrix to find all locations which are higher
-# than the location of entry
+# than the location of entry (depth-first search)
 #
 # Locations already visited are tracked through the recursive dives via
 # the `visited` logical matrix

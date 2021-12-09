@@ -4,8 +4,6 @@ read_heights <- function(file) {
   lines |> unlist() |> as.integer() |> matrix(nrow = length(lines), byrow = TRUE)
 }
 
-# Vectorized, matrix-based solution to part 1 of the puzzle.
-#
 # For a given matrix, generate a matrix shifted by one row/column
 # up/down or left/right.
 shift <- function(m, direction = c("up", "down", "left", "right")) {

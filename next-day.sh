@@ -49,3 +49,5 @@ if [[ ! -f $run_path ]]; then
 else
     echo "Run script already present at ${run_path}"
 fi
+
+touch R/${day}.R

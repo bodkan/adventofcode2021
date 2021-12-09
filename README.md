@@ -24,6 +24,6 @@ Second, I spend nearly all time at my job doing data analysis and research&mdash
 
 ### Personal stats
 
-As you can see, I've been approaching this very casually. 😎 🏖 🍹 Working on this during breaks throughout the day.
+As you can see, I've been approaching this very casually. 😎 🏖 🍹 Working on this during breaks throughout the day, so there's no way I will ever score well. ¯\\\_(ツ)\_/¯ 
 
 ![image](https://user-images.githubusercontent.com/16516593/145424478-4138d601-cf28-48b2-8892-9bd3c5a6620a.png)

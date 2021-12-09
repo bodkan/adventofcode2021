@@ -1,3 +1,4 @@
+# Read the integer matrix of heights at each position from the input file
 read_heights <- function(file) {
   lines <- readLines(file) |> lapply(strsplit, "")
   lines |> unlist() |> as.integer() |> matrix(nrow = length(lines), byrow = TRUE)
@@ -32,11 +33,14 @@ find_lowpoints <- function(heightmap) {
     which(arr.ind = TRUE)
 }
 
+# Does the given point lie within a map/matrix?
 in_map <- function(p, m) {
   p[1] > 0 && p[1] <= nrow(m) &&
   p[2] > 0 && p[2] <= ncol(m)
 }
 
+# Does the next point lie at a higher elevation than the current point,
+# and is it lower than 9 as per the puzzle specification?
 is_higher <- function(p_now, p_next, m) m[p_now] < m[p_next] && m[p_next] < 9
 
 # Recursively explore a given matrix to find all locations which are higher
@@ -44,41 +48,33 @@ is_higher <- function(p_now, p_next, m) m[p_now] < m[p_next] && m[p_next] < 9
 #
 # Locations already visited are tracked through the recursive dives via
 # the `visited` logical matrix
-dive <- function(p, m, visited) {
+find_basin <- function(p, m, visited) {
   visited[p] <- TRUE
 
-  up <- p + c(-1, 0)
-  down <- p + c(1, 0)
-  left <- p + c(0, -1)
-  right <- p + c(0, 1)
+  directions <- list(
+    "up" = c(-1, 0),
+    "down" = c(1, 0),
+    "left" = c(0, -1),
+    "right" = c(0, 1)
+  )
 
   nodes <- sprintf("%d-%d", p[1], p[2])
 
-  if (in_map(up, m) && is_higher(p, up, m) && !visited[up]) {
-    result <- dive(up, m, visited)
-    nodes <- c(nodes, result$nodes)
-    visited <- result$visited
-  }
-  if (in_map(down, m) && is_higher(p, down, m) && !visited[down]) {
-    result <- dive(down, m, visited)
-    nodes <- c(nodes, result$nodes)
-    visited <- result$visited
-  }
-  if (in_map(left, m) && is_higher(p, left, m) && !visited[left]) {
-    result <- dive(left, m, visited)
-    nodes <- c(nodes, result$nodes)
-    visited <- result$visited
-  }
-  if (in_map(right, m) && is_higher(p, right, m) && !visited[right]) {
-    result <- dive(right, m, visited)
-    nodes <- c(nodes, result$nodes)
-    visited <- result$visited
+  for (dir in directions) {
+    p_next <- p + dir
+    if (in_map(p_next, m) && is_higher(p, p_next, m) && !visited[p_next]) {
+      result <- find_basin(p_next, m, visited)
+      nodes <- c(nodes, result$nodes)
+      visited <- result$visited
+    }
   }
 
   list(nodes = nodes, visited = visited)
 }
 
-find_basins <- function(heightmap) {
+# Detect all lowpoints in a given height matrix and find their associated
+# basin coordinates
+find_all_basins <- function(heightmap) {
   lowpoints <- find_lowpoints(heightmap)
 
   # get logical mask for recording visited coordinates
@@ -86,7 +82,7 @@ find_basins <- function(heightmap) {
 
   basins <- list()
   for (i in seq_len(nrow(lowpoints))) {
-    result <- dive(lowpoints[i, , drop = FALSE], heightmap, visited)
+    result <- find_basin(lowpoints[i, , drop = FALSE], heightmap, visited)
     basins[[i]] <- result$nodes
     visited <- result$visited
   }
@@ -103,7 +99,7 @@ compute_risk <- function(heightmap) {
 #' Find the three largest basins and compute the product of their sizes
 #' as required by part 2
 compute_basin_product <- function(heightmap) {
-  find_basins(heightmap) |>
+  find_all_basins(heightmap) |>
     sapply(length) |>
     sort(decreasing = TRUE) |>
     head(3) |>

@@ -56,6 +56,9 @@ find_basin <- function(p, m, visited) {
     "right" = c(0, 1)
   )
 
+  # it turns out we only need to collect the *sizes* of the basins,
+  # and don't need to identify the locations of the basins themselves so
+  # collecting their unique [x, y] identifiers in a vector will do
   nodes <- sprintf("%d-%d", p[1], p[2])
 
   for (dir in directions) {

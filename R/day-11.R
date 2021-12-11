@@ -11,12 +11,16 @@ count_flashes <- function(m) {
       new_flashes <- m > 9 & !flashes
       flashes <- flashes | new_flashes
 
-      for (dir in c("up", "down", "left", "right",
-                    "upleft", "upright",
-                    "downleft", "downright")) {
-        adjacent_flashes <- shift(new_flashes, dir, FALSE)
-        m[adjacent_flashes] <- m[adjacent_flashes] + 1
-      }
+      increment <-
+        shift(new_flashes, "up", FALSE) +
+        shift(new_flashes, "down", FALSE) +
+        shift(new_flashes, "left", FALSE) +
+        shift(new_flashes, "right", FALSE) +
+        shift(new_flashes, "upleft", FALSE) +
+        shift(new_flashes, "upright", FALSE) +
+        shift(new_flashes, "downleft", FALSE) +
+        shift(new_flashes, "downright", FALSE)
+      m <- m + increment
 
       if (!any(new_flashes)) break
     }
@@ -42,12 +46,16 @@ detect_synchronized <- function(m) {
       new_flashes <- m > 9 & !flashes
       flashes <- flashes | new_flashes
 
-      for (dir in c("up", "down", "left", "right",
-                    "upleft", "upright",
-                    "downleft", "downright")) {
-        adjacent_flashes <- shift(new_flashes, dir, FALSE)
-        m[adjacent_flashes] <- m[adjacent_flashes] + 1
-      }
+      increment <-
+        shift(new_flashes, "up", FALSE) +
+        shift(new_flashes, "down", FALSE) +
+        shift(new_flashes, "left", FALSE) +
+        shift(new_flashes, "right", FALSE) +
+        shift(new_flashes, "upleft", FALSE) +
+        shift(new_flashes, "upright", FALSE) +
+        shift(new_flashes, "downleft", FALSE) +
+        shift(new_flashes, "downright", FALSE)
+      m <- m + increment
 
       if (!any(new_flashes)) break
     }

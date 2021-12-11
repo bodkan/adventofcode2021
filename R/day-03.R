@@ -2,10 +2,14 @@ read_matrix <- function(file) {
   if (!file.exists(file))
     stop("File '", file, "' does not exist", call. = FALSE)
 
-  readLines(file) |>
+  m <- readLines(file) |>
     sapply(strsplit, "") |>
     sapply(as.integer) |>
     t()
+
+  rownames(m) <- colnames(m) <- NULL
+
+  m
 }
 
 # Convert a given binary digit (vector of 0 and 1) into decimal

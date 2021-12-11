@@ -7,14 +7,22 @@ read_heights <- function(file) {
 # For a given matrix, generate a matrix shifted by one row/column
 # up/down or left/right.
 shift <- function(m, direction = c("up", "down", "left", "right",
-                                   "upleft", "upright", "downleft", "downright")) {
+                                   "upleft", "upright", "downleft", "downright"),
+                  x = Inf) {
   direction <- match.arg(direction)
 
-  switch(direction,
-         up    = rbind(m[-1, ], Inf),
-         down  = rbind(Inf, m[-nrow(m), ]),
-         right = cbind(m[, -1], Inf),
-         left  = cbind(Inf, m[, -ncol(m)]))
+  m <- switch(direction,
+         up    = rbind(m[-1, ], x),
+         down  = rbind(x, m[-nrow(m), ]),
+         right = cbind(m[, -1], x),
+         left  = cbind(x, m[, -ncol(m)]),
+         upleft = cbind(rbind(m[-1, -1], x), x),
+         upright = cbind(x, rbind(m[-1, -ncol(m)], x)),
+         downleft = cbind(rbind(x, m[-nrow(m), -1]), x),
+         downright = cbind(x, rbind(x, m[-nrow(m), -ncol(m)])))
+
+  rownames(m) <- colnames(m) <- NULL
+  m
 }
 
 # Detect lowpoints by finding those positions of a matrix which carry a number

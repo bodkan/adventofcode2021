@@ -34,17 +34,18 @@ read_caves <- function(file) {
 
 # Recursively visit each node of the graph assuming a given condition
 # function provided in `can_enter`
-visit <- function(node, adjacency, visits, path, result, can_enter) {
+visit <- function(node, adjacency, visits, path, result, condition) {
   if (node == "end") {
     result$paths <- append(result$paths, list(c(path, node)))
     return()
   }
+
   visits[node] <- visits[node] + 1
 
   neighbors <- names(which(adjacency[node, ]))
   for (neighbor in neighbors) {
-    if (can_enter(neighbor, visits))
-      visit(neighbor, adjacency, visits, path = c(path, node), result, can_enter)
+    if (condition(neighbor, visits))
+      visit(neighbor, adjacency, visits, path = c(path, node), result, condition)
   }
 }
 
@@ -56,10 +57,14 @@ find_paths <- function(file, condition) {
   result <- new.env()
   result$paths <- list()
 
+  # read the graph as an adjacency matrix
   adjacency <- read_caves(file)
+
+  # create a vector for tracking the number of visits of each node
   visits <- rep(0, nrow(adjacency))
   names(visits) <- unique(rownames(adjacency))
 
+  # start exploring the graph from the node 'start'
   visit(node = "start", adjacency, visits, path = c(), result, condition)
 
   result$paths

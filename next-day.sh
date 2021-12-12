@@ -37,7 +37,10 @@ echo "-----"
 if grep -q "${day}" inst/run-all.R; then
     echo "Run code for the day already present in inst/run-all.R"
 else
-    echo "source(\"inst/run-${day}.R\", local = TRUE)" >> inst/run-all.R
+    cp inst/run-all.R inst/run-all.R.old
+    echo "source(\"inst/run-${day}.R\", local = TRUE)" > inst/run-all.R
+    cat inst/run-all.R.old >> inst/run-all.R
+    rm inst/run-all.R.old
 fi
 
 echo "-----"

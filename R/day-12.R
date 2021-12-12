@@ -55,16 +55,19 @@ read_caves <- function(file) {
 
 # First condition for traversing the graph (part 1)
 can_enter1 <- function(node, visits) {
-  toupper(node) == node | !visits[node]
+  # a big node can be visited multiple times, small node only once
+  toupper(node) == node | visits[node] == 0
 }
 
 # Second condition for traversing the graph (part 2)
 can_enter2 <- function(node, visits) {
-  toupper(node) == node |
-    !visits[node] |
-    (node != "start" &&
-       visits[node] == 1 &&
-       all(visits[!names(visits) %in% c("start", node) &
-                    names(visits) == tolower(names(visits))
-       ] != 2))
+  # four conditions under which a node can be visited more than once
+  big_cave <- toupper(node) == node    # a big cave
+  not_visited <- !visits[node]         # cave not yet visited
+  not_start <- node != "start"         # not the starting point
+  second_visit <- visits[node] == 1 && # no other small cave visited twice
+    all(visits[names(visits) != node &
+               names(visits) == tolower(names(visits))] <= 1)
+
+  big_cave || not_visited || (not_start && second_visit)
 }

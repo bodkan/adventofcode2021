@@ -38,14 +38,14 @@ start-RW")
 
 test_that(test_name(day = 12, part = 1), {
   cond <- can_enter1
-  expect_true(length(find_paths(test_file1, cond)) == 10)
-  expect_true(length(find_paths(test_file2, cond)) == 19)
-  expect_true(length(find_paths(test_file3, cond)) == 226)
+  expect_true(find_paths(test_file1, cond) == 10)
+  expect_true(find_paths(test_file2, cond) == 19)
+  expect_true(find_paths(test_file3, cond) == 226)
 })
 
 test_that(test_name(day = 12, part = 2), {
   cond <- can_enter2
-  expect_true(length(find_paths(test_file1, cond)) == 36)
-  expect_true(length(find_paths(test_file2, cond)) == 103)
-  expect_true(length(find_paths(test_file3, cond)) == 3509)
+  expect_true(find_paths(test_file1, cond) == 36)
+  expect_true(find_paths(test_file2, cond) == 103)
+  expect_true(find_paths(test_file3, cond) == 3509)
 })

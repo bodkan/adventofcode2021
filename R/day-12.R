@@ -1,7 +1,10 @@
 # Recursively visit each node of the graph assuming a given condition
 visit <- function(node, adjacency, visits, path, result, condition) {
   if (node == "end") {
-    result$paths <- append(result$paths, list(c(path, node)))
+    # the puzzle only requires counting of the paths, no need to track them
+    # explicitly (this significantly speeds up the solution)
+    # result$paths <- append(result$paths, list(c(path, node)))
+    result$paths <- result$paths + 1
     return()
   }
 
@@ -20,7 +23,7 @@ find_paths <- function(file, condition) {
   # create new environment for saving the paths detected deep in the
   # recursion calls using reference semantics
   result <- new.env()
-  result$paths <- list()
+  result$paths <- 0
 
   # read the graph as an adjacency matrix
   adjacency <- read_caves(file)

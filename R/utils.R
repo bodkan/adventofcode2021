@@ -31,8 +31,17 @@ check_answer <- function(day, part, result) {
     "11-1" = 1659,
     "11-2" = 227,
     "12-1" = 4167,
-    "12-2" = 98441
+    "12-2" = 98441,
+    "13-1" = 850,
+    "13-2" = c(
+      " ##  #  #  ##   ##  ###   ##   ##  #  # ",
+      "#  # #  # #  # #  # #  # #  # #  # #  # ",
+      "#  # #### #    #    #  # #    #  # #  # ",
+      "#### #  # # ## #    ###  # ## #### #  # ",
+      "#  # #  # #  # #  # #    #  # #  # #  # ",
+      "#  # #  #  ###  ##  #     ### #  #  ##  "
+    ) # read: AHGCPGAU
   )
-  if (answers[sprintf("%d-%d", day, part)] != result)
+  if (!all(answers[sprintf("%d-%d", day, part)][[1]] == result))
     stop("Wrong answer for day ", day, " part ", part, call. = FALSE)
 }

@@ -19,6 +19,7 @@ The "solutions as an R package" method is inspired by [\@tjmahr](https://github.
 - [Day 11 puzzle](https://adventofcode.com/2021/day/11) - [my solution](R/day-11.R)
 - [Day 12 puzzle](https://adventofcode.com/2021/day/12) - [my solution](R/day-12.R)
 - [Day 13 puzzle](https://adventofcode.com/2021/day/13) - [my solution](R/day-13.R)
+- [Day 14 puzzle](https://adventofcode.com/2021/day/14) - [my solution](R/day-14.R)
 
 ### Why on Earth would you use R for this?
 
@@ -30,4 +31,4 @@ Second, I spend nearly all time at my job doing data analysis and research&mdash
 
 As you can see, I've been approaching this very casually. 😎 🏖 🍹 Working on this during breaks throughout the day, so there's no way I will ever score well. ¯\\\_(ツ)\_/¯ 
 
-![image](https://user-images.githubusercontent.com/16516593/145792290-04e235c0-6b0d-495b-b6a1-cc4e62c469db.png)
+![image](https://user-images.githubusercontent.com/16516593/145992035-16de578e-f139-4dc3-82d4-63c5ecf4deaf.png)

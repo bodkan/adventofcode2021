@@ -10,12 +10,13 @@ read_day14 <- function(file) {
   names(rules) <- sapply(rule_tokens, `[[`, 1)
 
   # determine all possible characters from the rules and count their
-  # initial occurences in the input template (converting to factor to
+  # initial occurrences in the input template (converting to factor to
   # include 0 counts for characters not yet present)
   letters <- unique(unlist(strsplit(names(rules), "")))
   char_counts <- table(factor(template, levels = letters)) |> as.vector()
   names(char_counts) <- letters
 
+  # count the pairs of adjacent characters in the input template
   pair_counts <- rep(0, length(rules))
   names(pair_counts) <- names(rules)
   for (i in seq(1, length(template) - 1)) {

@@ -20,6 +20,9 @@ test_that(test_name(day = 15, part = 2), {
   expect_true(compute_cost(tiled_map) == 315)
 })
 
-tiled_map <- tile_map(map)
-compute_cost(tiled_map)
-
+# tiled_map <- tile_map(map)
+# microbenchmark::microbenchmark(
+# compute_cost1(tiled_map),
+# compute_cost2(tiled_map)
+# )
+#

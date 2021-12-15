@@ -68,28 +68,30 @@ tile_map <- function(map) {
   )
 }
 
-compute_cost <- function(map) {
+compute_cost <- function(map, log = FALSE) {
   visited <- matrix(FALSE, nrow = nrow(map), ncol = ncol(map))
   costs <- matrix(Inf, nrow = nrow(map), ncol = ncol(map))
   costs[1, 1] <- 0
 
   while (TRUE) {
-    min_cost <- sort(costs[!visited]) |> head(1)
-    current <- which(costs == min_cost & !visited, arr.ind = TRUE)
-    if (nrow(current) > 1) current <- current[1, , drop = FALSE]
-    # if (sum(visited) %% 100 == 0) cat(sum(visited), " - ", current, "\n")
+    # take a node with the smallest cost among all unvisited nodes
+    min_cost <- min(costs[!visited])
+    current <- which(costs == min_cost & !visited, arr.ind = TRUE)[1, , drop = FALSE]
+
+    # terminate if we arrived at the final destination
     if (all(current == dim(map))) break
 
-    neighbors <- get_neighbors(current, visited)
-    if (!nrow(neighbors)) {
-      visited[current] <- TRUE
-      next
-    }
-    potential_costs <- costs[current] + map[neighbors]
+    if (log && sum(visited) %% 500 == 0)
+      cat(sum(visited) + 1, " - ", current, "\n")
 
+    # get all unvisited neighbors of the current node and update their
+    # costs if they are lower
+    neighbors <- get_neighbors(current, visited)
+    potential_costs <- costs[current] + map[neighbors]
     smaller_costs <- costs[neighbors] > potential_costs
     costs[neighbors[smaller_costs, , drop = FALSE]] <- potential_costs[smaller_costs]
 
+    # mark the current node as visited
     visited[current] <- TRUE
   }
 

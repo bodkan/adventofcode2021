@@ -43,6 +43,8 @@ compute_cost <- function(map, log = FALSE) {
 
   costs[nrow(costs), ncol(costs)]
 }
+
+# Read the map from the input file into a matrix
 read_day15_map <- function(file) {
   lines <- readLines(file) |> lapply(strsplit, "")
   lines |> unlist() |> as.integer() |> matrix(nrow = length(lines), byrow = TRUE)

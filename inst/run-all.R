@@ -1,4 +1,5 @@
-source("inst/run-day-15.R", local = TRUE)
+source("inst/run-day-16.R", local = TRUE)
+# source("inst/run-day-15.R", local = TRUE)
 source("inst/run-day-14.R", local = TRUE)
 source("inst/run-day-13.R", local = TRUE)
 source("inst/run-day-12.R", local = TRUE)

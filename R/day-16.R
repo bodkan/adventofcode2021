@@ -1,4 +1,113 @@
-# Extract i-th character of a given string
+# Evaluate the parsed packet expression tree bottom up by recursively applying
+# operations encoded in the header of each packet
+eval_expression <- function(expr) {
+  type_id <- expr$packet$type_id
+  # type 4 indicates a literal numerical value which can be returned as it is
+  if (type_id == 4)
+    result <- expr$packet$content
+  else {
+    # for more complex expressions, first evaluate individual components...
+    values <- sapply(expr$packet$content, eval_expression)
+    operator_fun <- switch(
+      as.character(type_id),
+      "0" = sum,
+      "1" = prod,
+      "2" = min,
+      "3" = max,
+      "5" = \(x) as.integer(x[1] > x[2]), # binary operations are
+      "6" = \(x) as.integer(x[1] < x[2]), # guaranteed to have only
+      "7" = \(x) as.integer(x[1] == x[2]) # two operands, by the spec
+    )
+    # ... and then apply the appropriate operation on all of them
+    result <- operator_fun(values)
+  }
+  result
+}
+
+# Recursively parse a given binary bitstring, building up a tree of nested
+# packet hierarchies
+parse_packet <- function(bin) {
+  # extract version and type ID from the header
+  version <- decode_version(bin)
+  type_id <- decode_type_id(bin)
+  # if (version$value == 3 && type_id$value == 0) browser()
+  # record how many bitshifts occured so far
+  all_shifts <- version$shift + type_id$shift
+
+  packet <- list(
+    version = version$value,
+    type_id = type_id$value
+  )
+
+  # if the header indicates a literal type, extract the number
+  if (type_id$value == 4) {
+    literal <- decode_literal(bin)
+    content <- literal$value
+    all_shifts <- all_shifts + literal$shift
+  } else { # the header indicates an operator type
+    content <- list()
+
+    # read the type of subpacket bitstring length encoding and increment
+    # the shift counter
+    length_type <- decode_length_type(bin)
+    all_shifts <- all_shifts + length_type$shift
+
+    # length type 0: subpackets are encoded in a fixed length bit string
+    if (length_type$value == 0) {
+      subpacket_bit_length <- decode_subpacket_length(bin)
+      all_shifts <- all_shifts + subpacket_bit_length$shift
+
+      # at which position in the bit string to start looking for the next
+      # subpacket bit string (or a consecutive series thereof)
+      start <- all_shifts + 1
+      shift <- subpacket_bit_length$value
+
+      repeat {
+        # move along the bitstring and extract the subpackets' bits
+        bin <- get_chunk(bin, start = start, len = shift)
+
+        # recursively parse the next subpacket and add its contents to
+        # the current packet's content body
+        parsed_result <- parse_packet(bin)
+        content[[length(content) + 1]] <- parsed_result
+
+        # shift along the subpacket bitstring accordingly
+        start <- parsed_result$shift + 1
+        shift <- shift - parsed_result$shift
+
+        all_shifts <- all_shifts + parsed_result$shift
+
+        if (shift == 0) break
+      }
+    } else { # length type 1: a given number of subpackets is specified
+      subpacket_count <- decode_subpacket_count(bin)
+      all_shifts <- all_shifts + subpacket_count$shift
+
+      start <- all_shifts + 1
+      for (i in seq_len(subpacket_count$value)) {
+        # move along the bitstring and extract the subpackets' bits
+        bin <- get_chunk(bin, start = start)
+
+        # recursively parse the next subpacket and add its contents to
+        # the current packet's content body
+        parsed_result <- parse_packet(bin)
+        content[[length(content) + 1]] <- parsed_result
+
+        # shift along the subpacket bitstring accordingly
+        start <- parsed_result$shift + 1
+
+        # if (packet$version == 3 & i == 1) browser()
+        all_shifts <- all_shifts + parsed_result$shift
+      }
+    }
+  }
+
+  packet[["content"]] <- content
+
+  list(packet = packet, shift = all_shifts)
+}
+
+# Extract i-th character of a given bitstring
 get_char <- function(str, i) substr(str, i, i)
 
 # Get a chunk from a given string of a specified length
@@ -119,113 +228,4 @@ decode_subpacket_count <- function(bits) {
 sum_versions <- function(x) {
   flattened <- unlist(x)
   sum(flattened[grep("version", names(flattened))])
-}
-
-# Recursively parse a given binary bitstring, returning a tree of nested
-# packet hierarchies
-parse_packet <- function(bin) {
-  # extract version and type ID from the header
-  version <- decode_version(bin)
-  type_id <- decode_type_id(bin)
-  # if (version$value == 3 && type_id$value == 0) browser()
-  # record how many bitshifts occured so far
-  all_shifts <- version$shift + type_id$shift
-
-  packet <- list(
-    version = version$value,
-    type_id = type_id$value
-  )
-
-  # if the header indicates a literal type, extract the number
-  if (type_id$value == 4) {
-    literal <- decode_literal(bin)
-    content <- literal$value
-    all_shifts <- all_shifts + literal$shift
-  } else { # the header indicates an operator type
-    content <- list()
-
-    # read the type of subpacket bitstring length encoding and increment
-    # the shift counter
-    length_type <- decode_length_type(bin)
-    all_shifts <- all_shifts + length_type$shift
-
-    # length type 0: subpackets are encoded in a fixed length bit string
-    if (length_type$value == 0) {
-      subpacket_bit_length <- decode_subpacket_length(bin)
-      all_shifts <- all_shifts + subpacket_bit_length$shift
-
-      # at which position in the bit string to start looking for the next
-      # subpacket bit string (or a consecutive series thereof)
-      start <- all_shifts + 1
-      shift <- subpacket_bit_length$value
-
-      repeat {
-        # move along the bitstring and extract the subpackets' bits
-        bin <- get_chunk(bin, start = start, len = shift)
-
-        # recursively parse the next subpacket and add its contents to
-        # the current packet's content body
-        parsed_result <- parse_packet(bin)
-        content[[length(content) + 1]] <- parsed_result
-
-        # shift along the subpacket bitstring accordingly
-        start <- parsed_result$shift + 1
-        shift <- shift - parsed_result$shift
-
-        all_shifts <- all_shifts + parsed_result$shift
-
-        if (shift == 0) break
-      }
-    } else { # length type 1: a given number of subpackets is specified
-      subpacket_count <- decode_subpacket_count(bin)
-      all_shifts <- all_shifts + subpacket_count$shift
-
-      start <- all_shifts + 1
-      for (i in seq_len(subpacket_count$value)) {
-        # move along the bitstring and extract the subpackets' bits
-        bin <- get_chunk(bin, start = start)
-
-        # recursively parse the next subpacket and add its contents to
-        # the current packet's content body
-        parsed_result <- parse_packet(bin)
-        content[[length(content) + 1]] <- parsed_result
-
-        # shift along the subpacket bitstring accordingly
-        start <- parsed_result$shift + 1
-
-        # if (packet$version == 3 & i == 1) browser()
-        all_shifts <- all_shifts + parsed_result$shift
-      }
-    }
-  }
-
-  packet[["content"]] <- content
-
-  list(packet = packet, shift = all_shifts)
-}
-
-# Traverse the expression tree and evaluate it bottom up based on operations
-# encoded by the type ID in the header of each packet
-eval_expression <- function(expr) {
-  type_id <- expr$packet$type_id
-  # type 4 indicates a literal numerical value which can be returned as it is
-  if (type_id == 4)
-    result <- expr$packet$content
-  else {
-    # for more complex expressions, first evaluate individual components...
-    values <- sapply(expr$packet$content, eval_expression)
-    operator_fun <- switch(
-      as.character(type_id),
-      "0" = sum,
-      "1" = prod,
-      "2" = min,
-      "3" = max,
-      "5" = \(x) as.integer(x[1] > x[2]), # binary operations are
-      "6" = \(x) as.integer(x[1] < x[2]), # guaranteed to have only
-      "7" = \(x) as.integer(x[1] == x[2]) # two operands, by the spec
-    )
-    # ... and then apply the appropriate operation on all of them
-    result <- operator_fun(values)
-  }
-  result
 }

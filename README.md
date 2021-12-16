@@ -33,4 +33,4 @@ Second, I spend nearly all time at my job doing data analysis and research&mdash
 
 As you can see, I've been approaching this very casually. 😎 🏖 🍹 Working on this during breaks throughout the day, so there's no way I will ever score well. ¯\\\_(ツ)\_/¯ 
 
-![image](https://user-images.githubusercontent.com/16516593/146248727-1957f19c-cbe1-40ce-8aee-3d544f51c69e.png)
+![image](https://user-images.githubusercontent.com/16516593/146465370-2248ef34-c37b-4a7b-83b7-7e631d0d8633.png)

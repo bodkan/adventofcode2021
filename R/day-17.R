@@ -1,9 +1,9 @@
 # Wrapper around the optim function to determine the maximum possible height
 # among all trajectories which ultimately hit the target area -- part 1 solution
 #
-# Note: this is ridiculously overengineered on purpose. The point was to learn
-# how could one use the built-in `optim()` function for integer optimization and
-# combinatorial problems
+# Note: this is ridiculously over-engineered on purpose. The point was to learn
+# how (if) could one use the built-in `optim()` function for integer
+# optimization and combinatorial problems
 optimize_height <- function(area, init, step_x, step_y, maxit = 10000) {
   result <- optim(par = init, fn = optim_fn, gr = change_fun,
                   method = "SANN",

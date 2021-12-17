@@ -5,10 +5,12 @@
 # how (if) could one use the built-in `optim()` function for integer
 # optimization and combinatorial problems
 optimize_height <- function(area, init, step_x, step_y, maxit = 10000) {
-  result <- optim(par = init, fn = optim_fn, gr = change_fun,
-                  method = "SANN",
-                  control = list(fnscale = -1, maxit = maxit),
-                  area = area, step_x = step_x, step_y = step_y)
+  result <- optim(
+    par = init, fn = optim_fn, gr = change_fun,
+    method = "SANN", # simulated annealing the only integer solution for optim()?
+    control = list(fnscale = -1, maxit = maxit),
+    area = area, step_x = step_x, step_y = step_y
+  )
   result
 }
 

@@ -1,5 +1,6 @@
 # Evaluate the parsed packet expression tree bottom up by recursively applying
-# operations encoded in the header of each packet
+# operations encoded in the header of each packet (stored in each node of the
+# expression tree)
 eval_expression <- function(expr) {
   type_id <- expr$packet$type_id
   # type 4 indicates a literal numerical value which can be returned as it is

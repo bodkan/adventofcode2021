@@ -1,37 +1,26 @@
-ex1 <- "[1,2]"
-ex2 <- "[[1,2],3]"
-ex3 <- "[9,[8,7]]"
-ex4 <- "[[1,2],[3,4]]"
-
 unwrap_pair <- function(str) substr(str, 2, nchar(str) - 1)
 
 is_number <- function(x) {
-  suppressWarnings(!is.na(as.numeric(x))) && !is.list(x)
+  !is.list(x) && suppressWarnings(!is.na(as.numeric(x)))
 }
 
 split_pair <- function(inside) {
-  commas <- unlist(gregexpr(",", inside))
+  open <- 0
+  i <- 1
+  repeat {
+    char <- substr(inside, i, i)
+    if (char == "[")
+      open <- open + 1
+    else if (char == "]")
+      open <- open - 1
 
-  left_char <- substr(inside, 1, 1)
-  right_char <- substr(inside, nchar(inside), nchar(inside))
-
-  # get position of the comma splitting the pair in two parts
-  if (is_number(left_char) && !is_number(right_char)) {
-    mid_comma <- 1
-  } else if (!is_number(left_char) && is_number(right_char)) {
-    mid_comma <- length(commas)
-  } else if ((left_char == "[" && right_char == "]") |
-             (is_number(left_char) && is_number(right_char))) {
-    mid_comma <- ceiling(length(commas) / 2)
-  } else
-    stop("Invalid pair detected", call. = FALSE)
-
-  midpoint <- commas[mid_comma]
-
-  left <- substr(inside, 1, midpoint - 1)
-  right <- substr(inside, midpoint + 1, nchar(inside))
-
-  list(left = left, right = right)
+    i <- i + 1
+    if (i > 1 && open == 0) break
+  }
+  list(
+    left = substr(inside, 1, i - 1),
+    right = substr(inside, i + 1, nchar(inside))
+  )
 }
 
 parse_pair <- function(input, depth = 1) {
@@ -75,6 +64,8 @@ add_pair <- function(p1, p2) {
 }
 
 print_pair <- function(pair) {
+  if (is_number(pair)) return(as.character(pair))
+
   left <- pair$left
   right <- pair$right
 
@@ -85,15 +76,76 @@ print_pair <- function(pair) {
   output
 }
 
-# parsing
-w <- parse_pair(ex1)
-x <- parse_pair(ex2)
-y <- parse_pair(ex3)
-z <- parse_pair(ex4)
+should_explode <- function(x) {
+  flat <- unlist(x)
+  any(flat[grep("depth", names(flat))] > 4)
+}
 
-# printing
-print_pair(w)
-print_pair(x)
-print_pair(y)
-print_pair(z)
+explode_pair <- function(pair, explode = NULL) {
+  left <- pair$left
+  right <- pair$right
+
+  if (!is.null(explode) && !sum(explode[c("left", "right")]) && explode["any"] != 0) {
+    if (is_number(left)) {
+      left <- left + explode["any"]
+      explode["any"] <- 0
+      return(list(left = left, right = right, explode = explode))
+    } else if (is_number(right)) {
+      right <- right + explode["any"]
+      explode["any"] <- 0
+      return(list(left = left, right = right, explode = explode))
+    }
+  }
+
+  # We reached a pair of numbers-- check if it needs to be exploded and if so,
+  # carry the information about explosion one level higher
+  if (is_number(left) && is_number(right)) {
+    # if (left == 3 && right == 2) browser()
+    if (pair$depth > 4 && is.null(explode))
+      return(list(replace = 0, explode = c(left = left, right = right)))
+    else
+      return(pair)
+  }
+
+  # recursively check for explosion on the left branch
+  if (!is_number(left)) {
+    left <- explode_pair(left, explode)
+    if (is.null(explode)) explode <- left$explode
+  }
+
+  # recursively check for explosion on the right
+  if (!is_number(right)) {
+    right <- explode_pair(right, explode)
+    if (is.null(explode)) explode <- right$explode
+  }
+
+  if (!is.null(explode)) {
+    if (is_number(left) && explode["left"] != 0) {
+      left <- left + explode["left"]
+      explode["left"] <- 0
+    }
+    if (is_number(right) && explode["right"] != 0) {
+      right <- right + explode["right"]
+      explode["right"] <- 0
+    }
+  }
+
+  if (!is_number(left) && !is.null(left$replace)) left <- left$replace
+  if (!is_number(right) && !is.null(right$replace)) right <- right$replace
+
+  if (pair$depth == 1 && !is.null(explode) && any(explode > 0)) {
+    if (!is_number(left) && !is.null(left$explode) && explode["right"] > 0) {
+      explode["any"] <- explode["right"]
+      explode["right"] <- 0
+      right <- explode_pair(right, explode)
+    }
+    if (!is_number(right) && !is.null(right$explode) && explode["left"] > 0) {
+      explode["any"] <- explode["left"]
+      explode["left"] <- 0
+      left <- explode_pair(left, explode)
+    }
+  }
+
+  list(left = left, right = right, depth = pair$depth, explode = explode)
+}
 

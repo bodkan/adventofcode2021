@@ -72,27 +72,8 @@ split_inside <- function(inside) {
     right = substr(inside, i + 1, nchar(inside))
   )
 }
-#
-# increment_depth <- function(pair) {
-#   left <- pair$left
-#   right <- pair$right
-#
-#   if (!is_integer(left)) left <- increment_depth(left)
-#   if (!is_integer(right)) right <- increment_depth(right)
-#
-#   list(left = left, right = right, depth = pair$depth + 1)
-# }
 
 add_number <- function(x, y) sprintf("[%s,%s]", x, y)
-#
-# add_number <- function(p1, p2) {
-#   p1 <- parse_number(p1)
-#   p2 <- parse_number(p2)
-#   left <- increment_depth(p1)
-#   right <- increment_depth(p2)
-#   result <- list(left = left, right = right, depth = 1)
-#   print_number(result)
-# }
 
 # Reduce the given recursive snailfish number back to a string representation
 print_number <- function(pair) {

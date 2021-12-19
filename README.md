@@ -23,6 +23,7 @@ The "solutions as an R package" method is inspired by [\@tjmahr](https://github.
 - [Day 15 puzzle](https://adventofcode.com/2021/day/15) - [my solution](R/day-15.R)
 - [Day 16 puzzle](https://adventofcode.com/2021/day/16) - [my solution](R/day-16.R)
 - [Day 17 puzzle](https://adventofcode.com/2021/day/17) - [my solution](R/day-17.R)
+- [Day 18 puzzle](https://adventofcode.com/2021/day/18) - [my solution](R/day-18.R)
 
 ### Why on Earth would you use R for this?
 

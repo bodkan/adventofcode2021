@@ -1,5 +1,6 @@
-test_name <- function(day, part) {
-  sprintf("Day %d, part %d adheres to the specification", day, part)
+test_name <- function(day, part, subtitle = "") {
+  if (subtitle != "") subtitle <- sprintf("(%s)", subtitle)
+  sprintf("Day %d, part %d adheres to the specification %s", day, part, subtitle)
 }
 
 # Save the example string input from Advent of Code to a file

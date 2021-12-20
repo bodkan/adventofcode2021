@@ -4,6 +4,18 @@ print_result <- function(day, part, result) {
 
 print_sep <- function() cat("-------\n")
 
+test_name <- function(day, part, subtitle = "") {
+  if (subtitle != "") subtitle <- sprintf("(%s)", subtitle)
+  sprintf("Day %d, part %d adheres to the specification %s", day, part, subtitle)
+}
+
+# Save the example string input from Advent of Code to a file
+create_test_file <- function(test_input) {
+  test_file <- tempfile()
+  writeLines(test_input, test_file)
+  test_file
+}
+
 #' Double check solutions for full puzzle inputs after refactoring
 #' and other retrospective code updates
 check_answer <- function(day, part, result) {
@@ -50,7 +62,9 @@ check_answer <- function(day, part, result) {
     "17-1" = 15931,
     "17-2" = 2555,
     "18-1" = 4469,
-    "18-2" = 4770
+    "18-2" = 4770,
+    "19-1" = 5316,
+    "19-2" = 16728
   )
   if (!all(answers[sprintf("%d-%d", day, part)][[1]] == result))
     stop("Wrong answer for day ", day, " part ", part, call. = FALSE)

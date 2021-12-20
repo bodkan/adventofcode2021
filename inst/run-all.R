@@ -1,3 +1,4 @@
+source("inst/run-day-19.R", local = TRUE)
 source("inst/run-day-18.R", local = TRUE)
 source("inst/run-day-17.R", local = TRUE)
 source("inst/run-day-16.R", local = TRUE)

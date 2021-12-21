@@ -135,29 +135,55 @@ file <- create_test_file("--- scanner 0 ---
 -652,-548,-490
 30,-46,-14")
 
-read_scanners <- function(file) {
-  lines <- readLines(file) |> (\(lines) Filter(\(x) x != "", lines))()
-  delimiters <- c(grep("scanner", lines), length(lines))
-  lapply(seq_along(delimiters)[-1], function(i) {
-    coords <- lines[delimiters[i - 1]:delimiters[i]]
-    coords[-c(1, length(coords))] |>
-      strsplit(",") |>
-      unlist() |>
-      as.numeric() |>
-      matrix(ncol = 3, byrow = TRUE)
-  })
-}
+cubes <- read_scanners(file)
 
-coords <- read_scanners(file)[[1]]
-
-dist <- list()
-for (i in seq_len(nrow(coords))) {
-  dist_i <- c()
-  for (j in seq_len(nrow(coords))) {
-    dist_i <- c(dist_i, abs(coords[i, ] - coords[j, ]))
+matched <- vector("list", length = length(cubes))
+for (i in seq_along(cubes)) {
+  for (j in seq_along(cubes)) {
+    if (i == j) next
+    cat(i, "-", j, "\n")
+    d1 <- compute_distances(cubes[[i]])
+    d2 <- compute_distances(cubes[[j]])
+    overlaps <- find_overlaps(d1, d2)
+    if (is.null(overlaps))
+      next
+    matched[[j]] <- unique(c(matched[[j]], overlaps))
+    # cubes[[j]] <- cubes[[j]][-overlaps, ]
   }
-  dist[[length(dist) + 1]] <- dist_i
 }
+
+b1 <- cubes[[i]][which(!is.na(overlaps)), ]
+b2 <- cubes[[j]][overlaps[!is.na(overlaps)], ]
+
+while (!(all(compute_distances(b1) == compute_distances(b2)))) {
+
+}
+
+x = c(10, 22, 33)
+
+# permutations
+x[c(1, 2, 3)]
+x[c(2, 3, 1)]
+x[c(3, 1, 2)]
+x[c(1, 3, 2)]
+x[c(3, 2, 1)]
+x[c(2, 1, 3)]
+
+x * c(1, 1, 1)
+x * c(-1, -1, -1)
+
+x * c(-1, 1, 1)
+x * c(1, -1, 1)
+x * c(1, 1, -1)
+
+x * c(-1, -1, 1)
+x * c(1, -1, -1)
+
+# distances <- compute_distances(cubes)
+#
+# overlaps <- find_overlaps(distances[[1]], distances[[2]])
+#
+# cubes[[2]][-overlaps, ]
 
 # test_that(test_name(day = 19, part = 1), {
 #   expect_true( == )

@@ -55,3 +55,39 @@ find_overlaps <- function(c1, c2) {
 
   matches
 }
+
+permute_axes <- function(x, i) {
+  perm_i <- (i - 1) %% 6 + 1
+  rot_i <- floor((i - 1) / 6) + 1
+
+  permutations <- list(
+    c(1, 2, 3),
+    c(2, 3, 1),
+    c(3, 1, 2),
+    c(1, 3, 2),
+    c(3, 2, 1),
+    c(2, 1, 3)
+  )
+  rotations <- list(
+    c(1, 1, 1),
+    c(-1, -1, 1),
+    c(1, -1, -1),
+    c(-1, 1, -1)
+  )
+
+  # cat(perm_i, " ", rot_i, "\n")
+  sweep(x[, permutations[[perm_i]], drop = FALSE], MARGIN = 2, rotations[[rot_i]], "*")
+}
+
+determine_orientation <- function(cube1, cube2) {
+  u <- cube1[1, , drop = FALSE] - cube1[2, , drop = FALSE]
+  v <- cube2[1, , drop = FALSE] - cube2[2, , drop = FALSE]
+
+  for (i in 1:24) {
+    v_ <- permute_axes(v, i)
+    if (length(unique(as.vector(u / v_))) == 1) break
+  }
+
+  stopifnot((all(u == v_)))
+  i
+}

@@ -37,10 +37,11 @@ find_overlaps <- function(c1, c2) {
       }
     }
   }
-  if (length(overlapping) < 12) return(NULL)
-  # if (!length(overlapping)) return(NULL)
+  if (!length(overlapping)) return(NULL)
 
   overlapping <- overlapping |> unlist() |> matrix(ncol = 4, byrow = TRUE)
+
+  if (length(unique(as.vector(overlapping[, 3:4]))) < 12) return(NULL)
 
   c1_beacons <- unique(as.integer(overlapping[, 3:4])) |> sort()
   c2_beacons <- unique(as.integer(overlapping[, 1:2])) |> sort()
@@ -58,7 +59,7 @@ find_overlaps <- function(c1, c2) {
 
 permute_axes <- function(x, i) {
   perm_i <- (i - 1) %% 6 + 1
-  rot_i <- floor((i - 1) / 6) + 1
+  rot_i <- floor((i - 1) / 8) + 1
 
   permutations <- list(
     c(1, 2, 3),
@@ -72,22 +73,29 @@ permute_axes <- function(x, i) {
     c(1, 1, 1),
     c(-1, -1, 1),
     c(1, -1, -1),
-    c(-1, 1, -1)
+    c(-1, 1, -1),
+
+    c(-1, -1, -1),
+    c(1, 1, -1),
+    c(-1, 1, 1),
+    c(1, -1, 1)
   )
 
   # cat(perm_i, " ", rot_i, "\n")
-  sweep(x[, permutations[[perm_i]], drop = FALSE], MARGIN = 2, rotations[[rot_i]], "*")
+  sweep(x, MARGIN = 2, rotations[[rot_i]], "*")[, permutations[[perm_i]], drop = FALSE]
 }
 
 determine_orientation <- function(cube1, cube2) {
   u <- cube1[1, , drop = FALSE] - cube1[2, , drop = FALSE]
   v <- cube2[1, , drop = FALSE] - cube2[2, , drop = FALSE]
 
-  for (i in 1:24) {
+  for (i in 1:48) {
     v_ <- permute_axes(v, i)
-    if (length(unique(as.vector(u / v_))) == 1) break
+    if (length(unique(as.vector(u / v_))) == 1 && all(sign(u) == sign(v_))) break
   }
 
-  stopifnot((all(u == v_)))
-  i
+  if (!(length(unique(as.vector(u / v_))) == 1 && all(sign(u) == sign(v_))))
+    return(-1)
+  else
+    return(i)
 }

@@ -136,48 +136,34 @@ file <- create_test_file("--- scanner 0 ---
 30,-46,-14")
 
 cubes <- read_scanners(file)
+dist <- lapply(cubes, compute_distances)
 
-matched <- vector("list", length = length(cubes))
-for (i in seq_along(cubes)) {
-  for (j in seq_along(cubes)) {
+for (i in seq(1, length(cubes))) {
+  for (j in seq(i, length(cubes))) {
     if (i == j) next
-    cat(i, "-", j, "\n")
-    d1 <- compute_distances(cubes[[i]])
-    d2 <- compute_distances(cubes[[j]])
-    overlaps <- find_overlaps(d1, d2)
-    if (is.null(overlaps))
-      next
-    matched[[j]] <- unique(c(matched[[j]], overlaps))
-    # cubes[[j]] <- cubes[[j]][-overlaps, ]
+    # cat(i, "-", j, "\n")
+    # browser()
+    overlaps <- find_overlaps(dist[[i]], dist[[j]])
+
+    if (is.null(overlaps)) next
+
+    cat("cubes", i, "and", j, "overlap at", sum(!is.na(overlaps)), "\n")
+    # cat("master cube", j, "overlap at", sum(!is.na(overlaps)), "\n")
+
+    c1_overlap <- cubes[[i]][which(!is.na(overlaps)), ]; cube1 = c1_overlap
+    c2_overlap <- cubes[[j]][overlaps[!is.na(overlaps)], ]; cube2 = c2_overlap
+    c2_unique <- cubes[[j]][which(is.na(overlaps)), ]
+
+    orientation <- determine_orientation(c1_overlap, c2_overlap)
+
+    c2_overlap_ <- permute_axes(c2_overlap, orientation)
+    shifted_by <- (c1_overlap - c2_overlap_)[1, ]
+    c2_unique <- permute_axes(c2_unique, orientation) |> sweep(MARGIN = 2, shifted_by, "+")
+
+    # cubes[[j]] <- c2_unique
   }
 }
 
-b1 <- cubes[[i]][which(!is.na(overlaps)), ]
-b2 <- cubes[[j]][overlaps[!is.na(overlaps)], ]
-
-while (!(all(compute_distances(b1) == compute_distances(b2)))) {
-
-}
-
-x = c(10, 22, 33)
-
-# permutations
-x[c(1, 2, 3)]
-x[c(2, 3, 1)]
-x[c(3, 1, 2)]
-x[c(1, 3, 2)]
-x[c(3, 2, 1)]
-x[c(2, 1, 3)]
-
-x * c(1, 1, 1)
-x * c(-1, -1, -1)
-
-x * c(-1, 1, 1)
-x * c(1, -1, 1)
-x * c(1, 1, -1)
-
-x * c(-1, -1, 1)
-x * c(1, -1, -1)
 
 # distances <- compute_distances(cubes)
 #

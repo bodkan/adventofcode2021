@@ -135,45 +135,13 @@ file <- create_test_file("--- scanner 0 ---
 -652,-548,-490
 30,-46,-14")
 
+
 cubes <- read_scanners(file)
-dist <- lapply(cubes, compute_distances)
+beacons <- reconstruct_beacons(cubes)
 
-for (i in seq(1, length(cubes))) {
-  for (j in seq(i, length(cubes))) {
-    if (i == j) next
-    # cat(i, "-", j, "\n")
-    # browser()
-    overlaps <- find_overlaps(dist[[i]], dist[[j]])
-
-    if (is.null(overlaps)) next
-
-    cat("cubes", i, "and", j, "overlap at", sum(!is.na(overlaps)), "\n")
-    # cat("master cube", j, "overlap at", sum(!is.na(overlaps)), "\n")
-
-    c1_overlap <- cubes[[i]][which(!is.na(overlaps)), ]; cube1 = c1_overlap
-    c2_overlap <- cubes[[j]][overlaps[!is.na(overlaps)], ]; cube2 = c2_overlap
-    c2_unique <- cubes[[j]][which(is.na(overlaps)), ]
-
-    orientation <- determine_orientation(c1_overlap, c2_overlap)
-
-    c2_overlap_ <- permute_axes(c2_overlap, orientation)
-    shifted_by <- (c1_overlap - c2_overlap_)[1, ]
-    c2_unique <- permute_axes(c2_unique, orientation) |> sweep(MARGIN = 2, shifted_by, "+")
-
-    # cubes[[j]] <- c2_unique
-  }
-}
-
-
-# distances <- compute_distances(cubes)
-#
-# overlaps <- find_overlaps(distances[[1]], distances[[2]])
-#
-# cubes[[2]][-overlaps, ]
-
-# test_that(test_name(day = 19, part = 1), {
-#   expect_true( == )
-# })
+test_that(test_name(day = 19, part = 1), {
+  expect_true(nrow(beacons) == 79)
+})
 #
 # test_that(test_name(day = 19, part = 2), {
 #   expect_true( == )

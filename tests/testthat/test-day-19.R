@@ -137,12 +137,13 @@ file <- create_test_file("--- scanner 0 ---
 
 
 cubes <- read_scanners(file)
-beacons <- reconstruct_beacons(cubes)
+aligned <- align_cubes(cubes, debug = TRUE)
+beacons <- dedupe_beacons(aligned)
 
 test_that(test_name(day = 19, part = 1), {
   expect_true(nrow(beacons) == 79)
 })
-#
+
 # test_that(test_name(day = 19, part = 2), {
 #   expect_true( == )
 # })

@@ -3,7 +3,8 @@ suppressMessages(devtools::load_all("."))
 input_file <- system.file("extdata/day-19.txt", package = "adventofcode2021")
 
 cubes <- read_scanners(input_file)
-beacons <- reconstruct_beacons(cubes, debug = TRUE)
+aligned <- align_cubes(cubes, debug = TRUE)
+beacons <- dedupe_beacons(aligned)
 
 part1 <- nrow(beacons)
 

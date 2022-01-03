@@ -14,7 +14,7 @@ check_answer(day = 19, part = 1, part1)
 locations <- do.call(rbind, result$locations)
 
 rel_distances <- compute_distances(locations)
-manhattan_distances <- rowSums(distances, dims = 2)
+manhattan_distances <- rowSums(rel_distances, dims = 2)
 
 part2 <- max(manhattan_distances)
 

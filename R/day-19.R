@@ -13,6 +13,8 @@ read_scanners <- function(file) {
 
 combinations <- expand.grid(1:6, 1:8)
 
+# mirroring operations are forbidden, so we have only 24 but not 48
+# transformations but I'm good with this inefficiency for now
 permutations <- list(
   c(1, 2, 3),
   c(2, 3, 1),
@@ -56,11 +58,9 @@ compute_distances <- function(cube) {
 find_overlaps <- function(c1, c2) {
   overlapping <- list()
   for (i in seq(1, dim(c2)[1])) {
-    for (j in seq(1, i)) {
-      if (i == j) next
+    for (j in seq_len(i - 1)) {
       for (k in seq(1, dim(c1)[1])) {
-        for (l in seq(1, k)) {
-          if (k == l) next
+        for (l in seq_len(k - 1)) {
           if (all(sort(c2[i, j, ]) == sort(c1[k, l, ]))) {
             overlapping[[length(overlapping) + 1]] <- c(i = i, j = j, k = k, l = l)
           }
@@ -117,10 +117,9 @@ align_cubes <- function(cubes, debug = FALSE) {
   # find the next unaligned cube which matches one of the cubes already aligned
   repeat {
     unaligned <- sapply(aligned, is.null)
-    if (!any(unaligned))
-      break
-    else
-      if (debug) cat(sum(unaligned), "unaligned cubes remain\n-----\n")
+    if (debug) cat(sum(unaligned), "unaligned cubes remain\n-----\n")
+
+    if (!any(unaligned)) break
 
     for (i in seq_along(cubes)) {
       for (j in seq_along(cubes)) {
@@ -128,7 +127,7 @@ align_cubes <- function(cubes, debug = FALSE) {
         if (i == j) { if (debug) cat("same pair\n"); next }
         if (!is.null(aligned[[i]]) && !is.null(aligned[[j]])) { if (debug) cat("both aligned already\n"); next }
         if (is.null(aligned[[i]]) && is.null(aligned[[j]])) { if (debug) cat("neither aligned yet\n"); next }
-        cat("\n")
+        if (debug) cat("\n")
 
         # find out which cube of the pair is already aligned w.r.t. cube #1 and
         # set its index to `c1` used as a reference for rotations and shifts below

@@ -137,13 +137,16 @@ file <- create_test_file("--- scanner 0 ---
 
 
 cubes <- read_scanners(file)
-aligned <- align_cubes(cubes, debug = FALSE)
-beacons <- dedupe_beacons(aligned)
+result <- align_cubes(cubes, debug = FALSE)
+beacons <- dedupe_beacons(result$aligned)
 
 test_that(test_name(day = 19, part = 1), {
   expect_true(nrow(beacons) == 79)
 })
 
-# test_that(test_name(day = 19, part = 2), {
-#   expect_true( == )
-# })
+rel_distances <- compute_distances(do.call(rbind, result$locations))
+manhattan_distances <- rowSums(rel_distances, dims = 2)
+
+test_that(test_name(day = 19, part = 2), {
+  expect_true(max(manhattan_distances) == 3621)
+})

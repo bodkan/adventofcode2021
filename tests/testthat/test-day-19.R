@@ -137,7 +137,7 @@ file <- create_test_file("--- scanner 0 ---
 
 
 cubes <- read_scanners(file)
-aligned <- align_cubes(cubes, debug = TRUE)
+aligned <- align_cubes(cubes, debug = FALSE)
 beacons <- dedupe_beacons(aligned)
 
 test_that(test_name(day = 19, part = 1), {

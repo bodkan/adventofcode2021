@@ -3,9 +3,9 @@ suppressMessages(devtools::load_all("."))
 input_file <- system.file("extdata/day-19.txt", package = "adventofcode2021")
 
 cubes <- read_scanners(input_file)
-aligned <- align_cubes(cubes, debug = TRUE)
-beacons <- dedupe_beacons(aligned)
+result <- align_cubes(cubes, debug = FALSE)
 
+beacons <- dedupe_beacons(result$aligned)
 part1 <- nrow(beacons)
 
 print_result(day = 19, part = 1, part1)

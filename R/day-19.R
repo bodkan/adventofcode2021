@@ -63,14 +63,10 @@ find_overlaps <- function(c1, c2) {
           if (k == l) next
           if (all(sort(c2[i, j, ]) == sort(c1[k, l, ]))) {
             overlapping[[length(overlapping) + 1]] <- c(i = i, j = j, k = k, l = l)
-            if (length(overlapping) > 12 * 11 / 2) break
           }
         }
-        if (length(overlapping) > 12 * 11 / 2) break
       }
-      if (length(overlapping) > 12 * 11 / 2) break
     }
-    if (length(overlapping) > 12 * 11 / 2) break
   }
   if (!length(overlapping)) return(NULL)
 
@@ -114,6 +110,9 @@ align_cubes <- function(cubes, debug = FALSE) {
 
   aligned <- vector("list", length(cubes))
   aligned[[1]] <- cubes[[1]]
+
+  locations <- vector("list", length(cubes))
+  locations[[1]] <- c(0, 0, 0)
 
   # find the next unaligned cube which matches one of the cubes already aligned
   repeat {
@@ -169,12 +168,15 @@ align_cubes <- function(cubes, debug = FALSE) {
           # perform the alignment of the second cube
           aligned[[c2]] <- permute_axes(cubes[[c2]], orientation) |>
             sweep(MARGIN = 2, shifted_by, "+")
+
+          # record the location of the scanner relative to the first scanner
+          locations[[c2]] <- shifted_by
         }
       }
     }
   }
 
-  aligned
+  list(aligned = aligned, locations = locations)
 }
 
 dedupe_beacons <- function(cubes) {

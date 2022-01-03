@@ -135,34 +135,15 @@ file <- create_test_file("--- scanner 0 ---
 -652,-548,-490
 30,-46,-14")
 
-read_scanners <- function(file) {
-  lines <- readLines(file) |> (\(lines) Filter(\(x) x != "", lines))()
-  delimiters <- c(grep("scanner", lines), length(lines))
-  lapply(seq_along(delimiters)[-1], function(i) {
-    coords <- lines[delimiters[i - 1]:delimiters[i]]
-    coords[-c(1, length(coords))] |>
-      strsplit(",") |>
-      unlist() |>
-      as.numeric() |>
-      matrix(ncol = 3, byrow = TRUE)
-  })
-}
 
-coords <- read_scanners(file)[[1]]
+cubes <- read_scanners(file)
+aligned <- align_cubes(cubes, debug = FALSE)
+beacons <- dedupe_beacons(aligned)
 
-dist <- list()
-for (i in seq_len(nrow(coords))) {
-  dist_i <- c()
-  for (j in seq_len(nrow(coords))) {
-    dist_i <- c(dist_i, abs(coords[i, ] - coords[j, ]))
-  }
-  dist[[length(dist) + 1]] <- dist_i
-}
+test_that(test_name(day = 19, part = 1), {
+  expect_true(nrow(beacons) == 79)
+})
 
-# test_that(test_name(day = 19, part = 1), {
-#   expect_true( == )
-# })
-#
 # test_that(test_name(day = 19, part = 2), {
 #   expect_true( == )
 # })

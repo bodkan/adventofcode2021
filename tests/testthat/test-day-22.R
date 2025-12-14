@@ -1,20 +1,29 @@
 options(scipen = 999)
 
 # tests of the interval intersect function --------------------------------
-test_that("intersect_intervals() behaves correctly (3D case)", {
-  # nonoverlapping cases
+test_that("intersect_intervals() behaves correctly", {
+  # nonoverlapping cases of p being to the left of q
   expect_true(is.null(intersect_intervals(p = c(0, 10), q = c(50, 70))))
+  expect_true(is.null(intersect_intervals(p = c(0, 10), q = c(11, 70))))
+  # nonoverlapping cases of p being to the right of q
   expect_true(is.null(intersect_intervals(p = c(120, 310), q = c(50, 70))))
+  expect_true(is.null(intersect_intervals(p = c(71, 310), q = c(50, 70))))
 
-  # p starts left of q
+  # partial ovelap when p starts left of q
   expect_equal(intersect_intervals(p = c(0, 10), q = c(5, 15)), c(5, 10))
-  # q starts left of q
+  expect_equal(intersect_intervals(p = c(0, 10), q = c(5, 10)), c(5, 10))
+  expect_equal(intersect_intervals(p = c(0, 10), q = c(10, 15)), c(10, 10))
+  # partial ovelap when q starts left of q
   expect_equal(intersect_intervals(p = c(13, 20), q = c(5, 15)), c(13, 15))
+  expect_equal(intersect_intervals(p = c(13, 15), q = c(5, 15)), c(13, 15))
+  expect_equal(intersect_intervals(p = c(15, 25), q = c(5, 15)), c(15, 15))
 
   # p is within q
   expect_equal(intersect_intervals(p = c(6, 7), q = c(5, 10)), c(6, 7))
+  expect_equal(intersect_intervals(p = c(7, 10), q = c(5, 10)), c(7, 10))
   # q is within p
   expect_equal(intersect_intervals(p = c(0, 10), q = c(5, 7)), c(5, 7))
+  expect_equal(intersect_intervals(p = c(0, 10), q = c(0, 3)), c(0, 3))
 
   # identical intervals
   expect_equal(intersect_intervals(p = c(0, 10), q = c(0, 10)), c(0, 10))
@@ -40,6 +49,14 @@ test_that("intersect_cuboids() behaves correctly (3D case)", {
   (A <- list(x = c(0, 0), y = c(0, 0), z = c(0, 0)))
   (B <- list(x = c(-1, 20), y = c(-5, 20), z = c(-5, 20)))
   expect_true(identical(intersect_cuboids(A, B), list(x = c(0, 0), y = c(0, 0), z = c(0, 0))))
+
+  (A <- list(x = c(-10, 10), y = c(-10, 10), z = c(-10, 10)))
+  (B <- list(x = c(0, 0), y = c(-10, 10), z = c(-10, 10)))
+  expect_true(identical(intersect_cuboids(A, B), list(x = c(0, 0), y = c(-10, 10), z = c(-10, 10))))
+
+  (A <- list(x = c(-10, 10), y = c(-10, 10), z = c(-10, 10)))
+  (B <- list(x = c(10, 10), y = c(-10, 10), z = c(-10, 10)))
+  expect_true(identical(intersect_cuboids(A, B), list(x = c(0, 0), y = c(-10, 10), z = c(-10, 10))))
 })
 
 test_that("intersect_cuboids() behaves correctly (1D case)", {
@@ -122,9 +139,71 @@ test_that("process_all() behaves correctly (1D input, case #3)", {
   expect_true(count_on(processed) == 11)
 })
 
-test_that("process_all() behaves correctly on a tiny 'degenerate' case", {
+test_that("process_all() behaves correctly on a tiny case 1", {
   file <- create_test_file("on x=0..1,y=0..1,z=0..1
 off x=1..2,y=0..1,z=0..1")
+  steps <- read_steps(file)
+  processed <- process_all(steps)
+  expect_identical(count_on(processed), 4)
+})
+
+test_that("process_all() behaves correctly on a tiny case 2", {
+  file <- create_test_file("on x=0..1,y=0..1,z=0..1
+on x=1..2,y=1..2,z=1..2
+off x=1..2,y=1..2,z=1..21")
+  steps <- read_steps(file)
+  processed <- process_all(steps)
+  expect_identical(count_on(processed), 7)
+})
+
+test_that("process_all() behaves correctly on a tiny case 3", {
+  file <- create_test_file("on x=0..1,y=0..1,z=0..1
+on x=0..1,y=0..1,z=-1..0
+on x=1..2,y=1..2,z=0..1")
+  steps <- read_steps(file)
+  processed <- process_all(steps)
+  expect_identical(count_on(processed), 18)
+})
+
+test_that("process_all() behaves correctly on a tiny case 4", {
+  file <- create_test_file("on x=-10..-1,y=-10..-1,z=-10..-1
+off x=-100..-100,y=-100..-100,z=-100..-100")
+  steps <- read_steps(file)
+  processed <- process_all(steps)
+  expect_identical(count_on(processed), 1000)
+})
+
+test_that("process_all() behaves correctly on a tiny case 5", {
+  file <- create_test_file("on x=-10..-1,y=-10..-1,z=-10..-1
+off x=-5..-5,y=-5..-5,z=-1000..1000")
+  steps <- read_steps(file)
+  processed <- process_all(steps)
+  expect_identical(count_on(processed), 990)
+})
+
+test_that("process_all() behaves correctly on a tiny case 6", {
+  file <- create_test_file("on x=1..10,y=1..10,z=1..10
+off x=10..10,y=1..10,z=1..10")
+  steps <- read_steps(file)
+  processed <- process_all(steps)
+  expect_identical(count_on(processed), 900)
+
+  file <- create_test_file("on x=1..10,y=1..10,z=1..10
+off x=1..10,y=10..10,z=1..10")
+  steps <- read_steps(file)
+  processed <- process_all(steps)
+  expect_identical(count_on(processed), 900)
+
+  file <- create_test_file("on x=1..10,y=1..10,z=1..10
+off x=1..10,y=1..10,z=10..10")
+  steps <- read_steps(file)
+  processed <- process_all(steps)
+  expect_identical(count_on(processed), 900)
+})
+
+test_that("process_all() behaves correctly on a tiny case 7", {
+  file <- create_test_file("on x=0..1,y=0..1,z=0..1
+on x=1..2,y=0..1,z=0..1")
   steps <- read_steps(file)
   processed <- process_all(steps)
   expect_identical(count_on(processed), 4)

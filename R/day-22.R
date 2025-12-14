@@ -147,8 +147,8 @@ count_on <- function(processed) {
   on <- Filter(\(x) x$action == TRUE, processed)
   off <- Filter(\(x) x$action == FALSE, processed)
 
-  sizes_on <- sapply(on, compute_volume)
-  sizes_off <- sapply(off, compute_volume)
+  sizes_on <- if (length(on)) sapply(on, compute_volume) else 0
+  sizes_off <- if (length(off)) sapply(off, compute_volume) else 0
 
   sum(sizes_on) - sum(sizes_off)
 }

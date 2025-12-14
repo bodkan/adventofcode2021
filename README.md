@@ -1,8 +1,20 @@
 # 🎄 Advent of Code 2021 in R 🎄
 
-This repository contains my solutions to the [Advent of Code 2021](https://adventofcode.com/2021) in R. My goal is to solve every puzzle using nothing else but base R functions and _without any data frames_ or data frame manipulation functions (matrices, n-dimensional arrays and linear algebra operations are OK).
+This repository contains my solutions to the [Advent of Code
+2021](https://adventofcode.com/2021) in R. My goal is to solve every puzzle
+using nothing else but base R functions and _without any data frames_ or data
+frame manipulation functions (matrices, n-dimensional arrays and linear algebra
+operations are OK).
 
-The "solutions as an R package" method is inspired by [\@tjmahr](https://github.com/tjmahr/adventofcode17)'s approach to Advent of Code 2017. Briefly, each script under `R/` contains the functions needed to solve the puzzle on a given day. Unit tests under `tests/` verify that my solutions adhere to the requirements given by each puzzle specification, using the tiny testing data on the Advent of Code website. Finally, `inst/` contains small standalone R scripts which solve the full puzzles stored in text files under `inst/extdata` and output the results to the terminal. All are executed by a master script in `inst/run-all.R`.
+The "solutions as an R package" method is inspired by
+[\@tjmahr](https://github.com/tjmahr/adventofcode17)'s approach to Advent of
+Code 2017. Briefly, each script under `R/` contains the functions needed to
+solve the puzzle on a given day. Unit tests under `tests/` verify that my
+solutions adhere to the requirements given by each puzzle specification, using
+the tiny testing data on the Advent of Code website. Finally, `inst/` contains
+small standalone R scripts which solve the full puzzles stored in text files
+under `inst/extdata` and output the results to the terminal. All are executed by
+a master script in `inst/run-all.R`.
 
 ### Solutions
 
@@ -27,10 +39,20 @@ The "solutions as an R package" method is inspired by [\@tjmahr](https://github.
 - [Day 19 puzzle](https://adventofcode.com/2021/day/19) - [my solution](R/day-19.R)
 - [Day 20 puzzle](https://adventofcode.com/2021/day/20) - [my solution](R/day-20.R)
 - [Day 21 puzzle](https://adventofcode.com/2021/day/21) - [my solution](R/day-21.R)
-- [Day 23 puzzle](https://adventofcode.com/2021/day/23) - No code! The puzzle (both parts 1 and 2) was turned into a boardgame and solved manually as a Christmas family activity. :)
+- [Day 23 puzzle](https://adventofcode.com/2021/day/23) - No code! The puzzle
+(both parts 1 and 2) was turned into a boardgame and solved manually as
+a Christmas family activity. :)
 
 ### Why on Earth would you use R for this?
 
 Several reasons. First, R is my favourite programming language. There, I said it.
 
-Second, I spend nearly all time at my job doing data analysis and research&mdash;nearly everything I work with on a daily basis are (gigantic) tables, the usual output of my work are figures and statistical models. Advent of Code presents a very different class of problems that I rarely get to work with these days and it seemed like a fun challenge trying to solve them in R. Moreover, as an additional challenge and a character building experience I decided to restrict myself to only use features available in base R 4.x without any additional packages and without using any data frames or functions that manipulate them (again, something that is very unusual when working with R).
+Second, I spend nearly all time at my job doing data scienceh&mdash;nearly
+everything I work with on a daily basis takes form of a (gigantic) table, and
+the purpose of my work is to produce figures, statistical models, and gain
+scientific insights. Advent of Code presents a very different class of problems
+that I rarely get to work with these days and it seemed like a fun challenge
+trying to solve them in R. Moreover, for an extra character building challenge,
+I decided to restrict myself to only use features available in base R without
+any additional packages and without using any data frames or functions that
+manipulate them (again, something that is very unusual when working with R).

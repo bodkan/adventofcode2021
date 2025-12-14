@@ -44,7 +44,7 @@ filter_cuboids <- function(steps, min, max) {
 # find their intersection and return it as another two-element vector (or
 # NULL in case of no overlap)
 intersect_intervals <- function(p, q) {
-  # take care of the testing scenario of 1D and 2D cuboids
+  # take care of the testing/debugging scenario of 1D and 2D cuboids
   if (is.null(p) && is.null(q))
     return(NULL)
 
@@ -63,7 +63,7 @@ intersect_cuboids <- function(A, B) {
   ay <- A$y; by <- B$y
   az <- A$z; bz <- B$z
 
-  # take care of the testing scenario of 1D and 2D cuboids
+  # take care of the testing/debugging scenario of 1D and 2D cuboids
   ndim <- as.integer(!all(is.null(ax))) + as.integer(!all(is.null(ay))) + as.integer(!all(is.null(az)))
 
   ix <- intersect_intervals(ax, bx)
@@ -161,6 +161,7 @@ compute_volume <- function(step) {
   size_z <- bit64::as.integer64(diff(step$cuboid$z) + 1)
 
   size <- size_x
+  # take care of the testing/debugging scenario of 1D and 2D cuboids
   if (length(size_y)) size <- size * size_y
   if (length(size_z)) size <- size * size_z
 

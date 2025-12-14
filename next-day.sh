@@ -41,6 +41,7 @@ else
     echo "source(\"inst/run-${day}.R\", local = TRUE)" > run-all.R
     cat run-all.R.old >> run-all.R
     rm run-all.R.old
+    echo "Updated batch runner script run-all.R"
 fi
 
 echo "-----"

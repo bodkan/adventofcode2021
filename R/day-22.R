@@ -148,6 +148,8 @@ count_on <- function(processed) {
   on <- Filter(\(x) x$action == TRUE, processed)
   off <- Filter(\(x) x$action == FALSE, processed)
 
+  # sapply seems to be incompatible with returning bit64 integer64 values,
+  # so the total needs to be computed via a reduce operation
   total_on <- Reduce(`+`, lapply(on, compute_volume), 0)
   total_off <- Reduce(`+`, lapply(off, compute_volume), 0)
 

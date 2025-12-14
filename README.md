@@ -39,6 +39,7 @@ a master script in `inst/run-all.R`.
 - [Day 19 puzzle](https://adventofcode.com/2021/day/19) - [my solution](R/day-19.R)
 - [Day 20 puzzle](https://adventofcode.com/2021/day/20) - [my solution](R/day-20.R)
 - [Day 21 puzzle](https://adventofcode.com/2021/day/21) - [my solution](R/day-21.R)
+- [Day 22 puzzle](https://adventofcode.com/2021/day/22) - [my solution](R/day-22.R)
 - [Day 23 puzzle](https://adventofcode.com/2021/day/23) - No code! The puzzle
 (both parts 1 and 2) was turned into a boardgame and solved manually as
 a Christmas family activity. :)

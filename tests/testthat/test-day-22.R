@@ -202,11 +202,18 @@ off x=1..10,y=1..10,z=10..10")
 })
 
 test_that("process_all() behaves correctly on a tiny case 7", {
-  file <- create_test_file("on x=0..1,y=0..1,z=0..1
-on x=1..2,y=0..1,z=0..1")
+  file <- create_test_file("on x=1..3,y=1..3,z=1..3
+off x=2..2,y=2..2,z=2..2")
   steps <- read_steps(file)
   processed <- process_all(steps)
-  expect_identical(count_on(processed), 4)
+  expect_identical(count_on(processed), 3^3 - 1)
+
+  file <- create_test_file("on x=1..3,y=1..3,z=1..3
+off x=2..2,y=2..2,z=2..2
+on x=2..2,y=1..3,z=2..2")
+  steps <- read_steps(file)
+  processed <- process_all(steps)
+  expect_identical(count_on(processed), 3^3)
 })
 
 test_that(test_name(day = 22, part = 1, subtitle = "example 1"), {
@@ -250,7 +257,7 @@ on x=967..23432,y=45373..81175,z=27513..53682")
 })
 
 test_that(test_name(day = 22, part = 2), {
-  file <- create_test_file(("on x=-5..47,y=-31..22,z=-19..33
+  file <- create_test_file("on x=-5..47,y=-31..22,z=-19..33
 on x=-44..5,y=-27..21,z=-14..35
 on x=-49..-1,y=-11..42,z=-10..38
 on x=-20..34,y=-40..6,z=-44..1
@@ -309,7 +316,7 @@ off x=-37810..49457,y=-71013..-7894,z=-105357..-13188
 off x=-27365..46395,y=31009..98017,z=15428..76570
 off x=-70369..-16548,y=22648..78696,z=-1892..86821
 on x=-53470..21291,y=-120233..-33476,z=-44150..38147
-off x=-93533..-4276,y=-16170..68771,z=-104985..-24507"))
+off x=-93533..-4276,y=-16170..68771,z=-104985..-24507")
 
   steps <- read_steps(file)
   processed <- process_all(steps)

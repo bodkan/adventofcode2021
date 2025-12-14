@@ -69,7 +69,8 @@ check_answer <- function(day, part, result) {
     "20-2" = 16728,
     "21-1" = 918081,
     "21-2" = 158631174219251,
-    "22-1" = 607573
+    "22-1" = 607573,
+    "22-2" = 1267133912086024
   )
   if (!all(answers[sprintf("%d-%d", day, part)][[1]] == result))
     stop("Wrong answer for day ", day, " part ", part, call. = FALSE)

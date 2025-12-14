@@ -143,21 +143,22 @@ process_all <- function(steps, quiet = TRUE) {
   processed
 }
 
+# Count the number of cubes within all "on" cuboids
 count_on <- function(processed) {
   on <- Filter(\(x) x$action == TRUE, processed)
   off <- Filter(\(x) x$action == FALSE, processed)
 
-  sizes_on <- if (length(on)) sapply(on, compute_volume) else 0
-  sizes_off <- if (length(off)) sapply(off, compute_volume) else 0
+  total_on <- Reduce(`+`, lapply(on, compute_volume), 0)
+  total_off <- Reduce(`+`, lapply(off, compute_volume), 0)
 
-  sum(sizes_on) - sum(sizes_off)
+  as.numeric(total_on - total_off)
 }
 
 # Compute the total volume of a given step's cuboid
 compute_volume <- function(step) {
-  size_x <- (diff(step$cuboid$x) + 1)
-  size_y <- (diff(step$cuboid$y) + 1)
-  size_z <- (diff(step$cuboid$z) + 1)
+  size_x <- bit64::as.integer64(diff(step$cuboid$x) + 1)
+  size_y <- bit64::as.integer64(diff(step$cuboid$y) + 1)
+  size_z <- bit64::as.integer64(diff(step$cuboid$z) + 1)
 
   size <- size_x
   if (length(size_y)) size <- size * size_y

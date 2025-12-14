@@ -36,6 +36,10 @@ test_that("intersect_cuboids() behaves correctly (3D case)", {
   (A <- list(x = c(10, 10), y = c(10, 10), z = c(10, 10)))
   (B <- list(x = c(-5, -20), y = c(-5, -20), z = c(5, 20)))
   expect_true(is.null(intersect_cuboids(A, B)))
+
+  (A <- list(x = c(0, 0), y = c(0, 0), z = c(0, 0)))
+  (B <- list(x = c(-1, 20), y = c(-5, 20), z = c(-5, 20)))
+  expect_true(identical(intersect_cuboids(A, B), list(x = c(0, 0), y = c(0, 0), z = c(0, 0))))
 })
 
 test_that("intersect_cuboids() behaves correctly (1D case)", {
@@ -116,6 +120,14 @@ test_that("process_all() behaves correctly (1D input, case #3)", {
   )
   processed <- process_all(steps)
   expect_true(count_on(processed) == 11)
+})
+
+test_that("process_all() behaves correctly on a tiny 'degenerate' case", {
+  file <- create_test_file("on x=0..1,y=0..1,z=0..1
+off x=1..2,y=0..1,z=0..1")
+  steps <- read_steps(file)
+  processed <- process_all(steps)
+  expect_identical(count_on(processed), 4)
 })
 
 test_that(test_name(day = 22, part = 1, subtitle = "example 1"), {

@@ -1,13 +1,13 @@
-parse_code <- function(file) {
+parse_program <- function(file) {
   readLines(file) |>
     lapply(\(l) {
       tokens <- strsplit(l, " ")[[1]]
 
       args <- list(tokens[2])
       if (length(tokens) > 2) {
-        args[[2]] <- tokens[3]
-        if (!is.na(strtoi(args[[2]]))) {
-          args[[2]] <- as.integer(args[[2]])
+        args[2] <- c(tokens[3])
+        if (!is.na(strtoi(args[2]))) {
+          args[2] <- as.integer(args[2])
         }
       }
 
@@ -17,3 +17,61 @@ parse_code <- function(file) {
       )
     })
 }
+
+get_value <- function(value, alu) {
+  if (is.numeric(value))
+    value
+  else
+    alu[[value]]
+}
+
+execute_instruction <- function(instruction, alu, input, debug) {
+  code <- instruction$instruction
+  args <- instruction$args
+
+  if (debug) {
+    cat("Current ALU registers:", paste(alu), "\n")
+    cat("Current input buffer:", paste(input), "\n")
+    cat("Current instruction to be executed:", code, paste(args), "\n")
+  }
+
+  if (code == "inp") {
+    alu[[args[[1]]]] <- bit64::as.integer64(input[1])
+    input <- input[-1]
+  } else if (code == "add") {
+    alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] + get_value(args[[2]], alu))
+  } else if (code == "mul") {
+    alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] * get_value(args[[2]], alu))
+  } else if (code == "div") {
+    alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] %/% get_value(args[[2]], alu))
+  } else if (code == "mod") {
+    alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] %% get_value(args[[2]], alu))
+  } else if (code == "eql") {
+    alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] == get_value(args[[2]], alu))
+  } else {
+    stop("Invalid instruction", code, "\n", call. = FALSE)
+  }
+
+  if (debug) {
+    cat("---\n")
+    cat("Updated ALU registers:", paste(alu), "\n")
+    cat("Updated input buffer:", paste(input), "\n")
+    cat("===\n")
+  }
+
+  list(alu = alu, input = input)
+}
+
+run_program <- function(program, input, debug = FALSE) {
+  alu <- list(w = bit64::as.integer64(0), x = bit64::as.integer64(0), y = bit64::as.integer64(0), z = bit64::as.integer64(0))
+
+  for (instruction in program) {
+    update <- execute_instruction(instruction, alu, input, debug)
+    alu <- update$alu
+    input <- update$input
+  }
+
+  alu
+}
+
+process_input <- function(x) as.integer(strsplit(as.character(x), "")[[1]])

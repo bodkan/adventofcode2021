@@ -9,12 +9,12 @@ operations are OK).
 The "solutions as an R package" method is inspired by
 [\@tjmahr](https://github.com/tjmahr/adventofcode17)'s approach to Advent of
 Code 2017. Briefly, each script under `R/` contains the functions needed to
-solve the puzzle on a given day. Unit tests under `tests/` verify that my
+solve the puzzle on a given day. Unit tests under `tests/` verify that the
 solutions adhere to the requirements given by each puzzle specification, using
-the tiny testing data on the Advent of Code website. Finally, `inst/` contains
-small standalone R scripts which solve the full puzzles stored in text files
-under `inst/extdata` and output the results to the terminal. All are executed by
-a master script in `inst/run-all.R`.
+the tiny testing data from the Advent of Code page for each day. Finally,
+`inst/` contains small standalone R scripts which solve the full puzzles stored
+in text files under `inst/extdata` and print the results to the terminal. All
+of these solutions can be executed by a master script `run-all.R`.
 
 ### Solutions
 

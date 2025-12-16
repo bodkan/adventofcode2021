@@ -62,18 +62,22 @@ execute_instruction <- function(instruction, alu, input, debug) {
   list(alu = alu, input = input)
 }
 
-run_program <- function(program, input, debug = FALSE) {
-  alu <- list(w = bit64::as.integer64(0), x = bit64::as.integer64(0), y = bit64::as.integer64(0), z = bit64::as.integer64(0))
-
+run_program <- function(alu, program, input, debug = FALSE) {
   for (instruction in program) {
     update <- execute_instruction(instruction, alu, input, debug)
     alu <- update$alu
     input <- update$input
   }
-
   alu
 }
 
 process_input <- function(x) bit64::as.integer64(strsplit(as.character(x), "")[[1]])
+
+initialize_alu <- function(w, x, y, z) {
+  list(w = bit64::as.integer64(w),
+       x = bit64::as.integer64(x),
+       y = bit64::as.integer64(y),
+       z = bit64::as.integer64(z))
+}
 
 concatenate <- function(x) paste(lapply(x, bit64::as.character.integer64), collapse = " ")

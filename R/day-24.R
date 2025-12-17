@@ -39,13 +39,13 @@ execute_instruction <- function(instruction, alu, input, debug) {
     alu[[args[[1]]]] <- input[1]
     input <- input[-1]
   } else if (code == "add") {
-    alu[[args[[1]]]] <- alu[[args[[1]]]] + get_value(args[[2]], alu)
+    alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] + get_value(args[[2]], alu))
   } else if (code == "mul") {
-    alu[[args[[1]]]] <- alu[[args[[1]]]] * get_value(args[[2]], alu)
+    alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] * get_value(args[[2]], alu))
   } else if (code == "div") {
-    alu[[args[[1]]]] <- alu[[args[[1]]]] %/% get_value(args[[2]], alu)
+    alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] %/% get_value(args[[2]], alu))
   } else if (code == "mod") {
-    alu[[args[[1]]]] <- alu[[args[[1]]]] %% get_value(args[[2]], alu)
+    alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] %% get_value(args[[2]], alu))
   } else if (code == "eql") {
     alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] == get_value(args[[2]], alu))
   } else {
@@ -63,7 +63,8 @@ execute_instruction <- function(instruction, alu, input, debug) {
 }
 
 run_program <- function(alu, program, input, debug = FALSE) {
-  for (instruction in program) {
+  for (i in seq_along(program)) {
+    instruction <- program[[i]]
     update <- execute_instruction(instruction, alu, input, debug)
     alu <- update$alu
     input <- update$input

@@ -8,6 +8,9 @@ mul x -1")
   expect_equal(run_program(alu, program, 1), list(w = 0, x = -1, y = 0, z = 0))
 
   alu <- initialize_alu(w = 0, x = 0, y = 0, z = 0)
+  expect_equal(run_program(alu, program, 42), list(w = 0, x = -42, y = 0, z = 0))
+
+  alu <- initialize_alu(w = 0, x = 0, y = 0, z = 0)
   expect_equal(run_program(alu, program, -42), list(w = 0, x = 42, y = 0, z = 0))
 })
 

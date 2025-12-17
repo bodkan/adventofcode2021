@@ -14,23 +14,31 @@ subprograms <- lapply(seq_len(length(starts) - 1), \(i) program[starts[i] : (sta
 
 
 find <- function(solution, target_z, subprograms) {
-  if (length(solution) == 6)
+  if (length(solution) == 14)
     return(solution)
 
   program <- subprograms[[14 - length(solution)]]
 
+  if (program[[5]]$args[[2]] == 1) {
+    candidates <- unique(as.integer(seq(-2500, 2500) + target_z / 26))
+    candidates <- candidates[candidates > 0]
+  } else {
+    candidates <- seq(5000) + target_z * 26
+  }
+
   for (digit in 9:1) {
-    for (z in seq(5e3) + target_z * program[[5]]$args[[2]]) {
+    for (z in candidates) {
       result <- run_program(initialize_alu(w = 0, x = 0, y = 0, z = z), program, bit64::as.integer64(digit))
       if (result$z == target_z) {
         cat("Recursing at:", length(solution) + 1, "while exploring digit =", digit, "on z =", z, "[ solution so far:", paste(solution, collapse = ""), "]...\n")
-        next_solution <- find(solution = c(solution, digit), target_z = z, subprograms)
+        next_solution <- find(solution = c(digit, solution), target_z = z, subprograms)
         if (!is.null(next_solution))
           return(next_solution)
       }
     }
   }
 
+  cat("!!! Failed at candidate solution", paste(solution, collapse = ""), "!\n")
   return(NULL)
 }
 
@@ -46,7 +54,7 @@ paste(find(solution = list(), target_z = 0, subprograms), collapse = "")
 # 14th
 sub_i <- 14
 combs_14 <- NULL
-for (z in seq(5000)) {
+for (z in seq(500)) {
   if (z %% 1000 == 0) cat(z, "\r")
 for (digit in 1:9) {
   result <- run_program(initialize_alu(w = 0, x = 0, y = 0, z = z), subprograms[[sub_i]], bit64::as.integer64(digit))
@@ -61,7 +69,7 @@ next_z <- valid[which.max(valid[, 1]), 2]
 # 13th
 sub_i <- 13
 combs_13 <- NULL
-for (z in seq(5000) + next_z * 26) {
+for (z in seq(2000) + next_z * 26) {
   if (z %% 1000 == 0) cat(z, "\r")
   for (digit in 1:9) {
     result <- run_program(initialize_alu(w = 0, x = 0, y = 0, z = z), subprograms[[sub_i]], bit64::as.integer64(digit))
@@ -69,7 +77,7 @@ for (z in seq(5000) + next_z * 26) {
     combs_13 <- rbind(combs_13, c(digit, z, as.numeric(result$z)))
   }
 }
-valid <- combs_13[combs_13[, 3] %in% 535, ]
+valid <- combs_13[combs_13[, 3] %in% next_z, ]
 next_z <- valid[which.max(valid[, 1]), 2]
 
 
@@ -123,11 +131,10 @@ next_z <- valid[which.max(valid[, 1]), 2]
 
 
 
-
 # 9th
 sub_i <- 9
 combs_9 <- NULL
-for (z in seq(5000)) {
+for (z in unique(as.integer(seq(-5000, 5000) * next_z / 26))) {
   if (z %% 1000 == 0) cat(z, "\r")
   for (digit in 1:9) {
     result <- run_program(initialize_alu(w = 0, x = 0, y = 0, z = z), subprograms[[sub_i]], bit64::as.integer64(digit))

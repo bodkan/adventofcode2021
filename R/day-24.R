@@ -9,7 +9,7 @@ parse_program <- function(file) {
       if (length(tokens) > 2) {
         args[2] <- c(tokens[3])
         if (!is.na(strtoi(args[2]))) {
-          args[2] <- as.integer(args[2])
+          args[2] <- as.numeric(args[2])
         }
       }
 
@@ -46,15 +46,15 @@ execute_instruction <- function(instruction, alu, input, debug) {
     alu[[args[[1]]]] <- input[1]
     input <- input[-1]
   } else if (code == "add") {
-    alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] + get_value(args[[2]], alu))
+    alu[[args[[1]]]] <- alu[[args[[1]]]] + get_value(args[[2]], alu)
   } else if (code == "mul") {
-    alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] * get_value(args[[2]], alu))
+    alu[[args[[1]]]] <- alu[[args[[1]]]] * get_value(args[[2]], alu)
   } else if (code == "div") {
-    alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] %/% get_value(args[[2]], alu))
+    alu[[args[[1]]]] <- alu[[args[[1]]]] %/% get_value(args[[2]], alu)
   } else if (code == "mod") {
-    alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] %% get_value(args[[2]], alu))
+    alu[[args[[1]]]] <- alu[[args[[1]]]] %% get_value(args[[2]], alu)
   } else if (code == "eql") {
-    alu[[args[[1]]]] <- bit64::as.integer64(alu[[args[[1]]]] == get_value(args[[2]], alu))
+    alu[[args[[1]]]] <- as.numeric(alu[[args[[1]]]] == get_value(args[[2]], alu))
   } else {
     stop("Invalid instruction", code, "\n", call. = FALSE)
   }
@@ -81,14 +81,11 @@ run_program <- function(alu, program, input, debug = FALSE) {
 }
 
 # Partition the given number into individual digits
-process_input <- function(x) bit64::as.integer64(strsplit(as.character(x), "")[[1]])
+process_input <- function(x) as.numeric(strsplit(as.character(x), "")[[1]])
 
 # Initialize ALu registers to given starting values
 initialize_alu <- function(w, x, y, z) {
-  list(w = bit64::as.integer64(w),
-       x = bit64::as.integer64(x),
-       y = bit64::as.integer64(y),
-       z = bit64::as.integer64(z))
+  list(w = w, x = x, y = y, z = z)
 }
 
-concatenate <- function(x) paste(lapply(x, bit64::as.character.integer64), collapse = " ")
+concatenate <- function(x) paste(x, collapse = " ")

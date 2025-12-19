@@ -26,7 +26,7 @@ eql z x")
   expect_equal(run_program(alu, program, c(1, 3)), list(w = 0, x = 3, y = 0, z = 1))
 })
 
-test_that(test_name(day = 24, part = 1, subtitle = "example 2"), {
+test_that(test_name(day = 24, part = 1, subtitle = "example 3"), {
   file <- create_test_file("inp w
 add z w
 mod z 2
@@ -50,12 +50,3 @@ mod w 2")
   expect_equal(run_program(alu, program, 8), list(w = 1, x = 0, y = 0, z = 0))
   expect_equal(run_program(alu, program, 10), list(w = 1, x = 0, y = 1, z = 0))
 })
-
-
-# test_that(test_name(day = 24, part = 1), {
-#   expect_true( == )
-# })
-#
-# test_that(test_name(day = 24, part = 2), {
-#   expect_true( == )
-# })

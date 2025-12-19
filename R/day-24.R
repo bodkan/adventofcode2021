@@ -1,3 +1,5 @@
+# Parse the ALU program in the given file into a list of instructions, each
+# instruction represented by a pair [<code>, [<arg 1>, ...]]
 parse_program <- function(file) {
   readLines(file) |>
     lapply(\(l) {
@@ -18,6 +20,8 @@ parse_program <- function(file) {
     })
 }
 
+# Extract a numerical value from a given register (or just return a numerical
+# value directly)
 get_value <- function(value, alu) {
   if (is.numeric(value))
     value
@@ -25,6 +29,9 @@ get_value <- function(value, alu) {
     alu[[value]]
 }
 
+# Given an instruction specified as [<code>, [<arg 1>, ...]], a current state
+# of the w, x, y, z registers of the ALU and a remaining list of digits to
+# be processed, modify the ALU registers accordingly
 execute_instruction <- function(instruction, alu, input, debug) {
   code <- instruction$instruction
   args <- instruction$args
@@ -62,6 +69,7 @@ execute_instruction <- function(instruction, alu, input, debug) {
   list(alu = alu, input = input)
 }
 
+# Execute a program given an ALU starting state and a list of digits to process
 run_program <- function(alu, program, input, debug = FALSE) {
   for (i in seq_along(program)) {
     instruction <- program[[i]]
@@ -72,8 +80,10 @@ run_program <- function(alu, program, input, debug = FALSE) {
   alu
 }
 
+# Partition the given number into individual digits
 process_input <- function(x) bit64::as.integer64(strsplit(as.character(x), "")[[1]])
 
+# Initialize ALu registers to given starting values
 initialize_alu <- function(w, x, y, z) {
   list(w = bit64::as.integer64(w),
        x = bit64::as.integer64(x),

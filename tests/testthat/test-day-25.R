@@ -10,26 +10,32 @@ v.v..>>v.v
 
 file2 <- create_test_file("...>>>>>...")
 
-cucumbers <- read_cucumbers(file2)
+file3 <- create_test_file("..........
+.>v....v..
+.......>..
+..........")
+
+cucumbers <- read_cucumbers(file3)
 
 move <- function(cucumbers, direction) {
   # extract matrices of eastward- and southward-moving cucumbers
   e <- cucumbers$east
   s <- cucumbers$south
 
-  # add a new dummy right column wrap
+  ##############################
+  # eastward movement first
+
+  # add a new dummy right east column wrap
   e <- cbind(e, e[, 1])
   # e <- e[1:2, , drop = FALSE]
   e
 
-  # similarly, add a new bottom column wrap
+  # similarly, add a new right south column wrap
   s <- cbind(s, s[, 1])
   # s <- s[1:2, , drop = FALSE]
   s
 
-  # eastward movement first
-
-  # get indicators of cucumbers which moved left in a vectorized matrix operation
+  # get indicators of cucumbers which moved left using a vectorized matrix operation
   emoving <- (t(diff(t(e | s))) == -1) & e[, -ncol(e)]
   emoving
 
@@ -47,7 +53,41 @@ move <- function(cucumbers, direction) {
   # combine the matrices of static and moved cucumbers back to a single matrix
   e <- estatic | eshifted
 
-  list(east = e, south = s[, -ncol(s), drop = FALSE])
+  ##############################
+  # southward movement next
+
+  # remove the dummy right column
+  s <- s[, -ncol(s)]
+
+  # add a new dummy bottom east row wrap
+  e <- rbind(e, e[1, ])
+  # e <- e[1:2, , drop = FALSE]
+  e
+
+  # similarly, add a new bottom south row wrap
+  s <- rbind(s, s[1, ])
+  # s <- s[1:2, , drop = FALSE]
+  s
+
+  # get indicators of cucumbers which moved south using a vectorized matrix operation
+  smoving <- (diff(e | s) == -1) & s[-nrow(s), ]
+  smoving
+
+  # those who don't move remain static, by definition
+  sstatic <- s[-nrow(s), ] & !smoving
+  sstatic
+
+  # careful, we can't afford to lose cucumbers!
+  stopifnot(sum(s) == sum(smoving) + sum(sstatic))
+
+  # shift southward-moving cucumbers to their new indices
+  sshifted <- smoving[c(nrow(smoving), 1:(nrow(smoving) - 1)), , drop = FALSE]
+  sshifted
+
+  # combine the matrices of static and moved cucumbers back to a single matrix
+  s <- sstatic | sshifted
+
+  list(east = e[-nrow(e), , drop = FALSE], south = s)
 }
 
 cucumbers

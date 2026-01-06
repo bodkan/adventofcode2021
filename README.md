@@ -42,6 +42,9 @@ of these solutions can be executed by a master script `run-all.R`.
 - [Day 22 puzzle](https://adventofcode.com/2021/day/22) - [my solution](R/day-22.R)
 - [Day 23 puzzle](https://adventofcode.com/2021/day/23) - No code! I turned the puzzle
 into a "boardgame" and we solved it as a family activity. :)
+- [Day 24 puzzle](https://adventofcode.com/2021/day/24) - No code again! I implemented
+the ALU as an interactive puzzle "game" [in Excel](ALU.xlsx). ¯\\_(ツ)\_/¯ 
+- [Day 22 puzzle](https://adventofcode.com/2021/day/25) - [my solution](R/day-25.R)
 
 ### Why on Earth would you use R for this?
 

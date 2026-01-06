@@ -1,4 +1,54 @@
-file1 <- create_test_file("v...>>.vv>
+test_that(test_name(day = 25, part = 1, subtitle = "example 1"), {
+  start <- read_cucumbers(create_test_file("...>>>>>..."))
+  end1 <- read_cucumbers(create_test_file("...>>>>.>.."))
+  end2 <- read_cucumbers(create_test_file("...>>>.>.>."))
+
+  # check situation after one step
+  expect_equal(move_cucumbers(start), end1)
+  # check situation after two steps
+  expect_equal(move_cucumbers(move_cucumbers(start)), end2)
+})
+
+test_that(test_name(day = 25, part = 1, subtitle = "example 2"), {
+  start <- create_test_file("..........
+.>v....v..
+.......>..
+..........") |> read_cucumbers()
+
+  end <- create_test_file("..........
+.>........
+..v....v>.
+..........") |> read_cucumbers()
+
+  expect_equal(move_cucumbers(start), end)
+})
+
+test_that(test_name(day = 25, part = 1, subtitle = "example 3 (wraps)"), {
+  start <- create_test_file("...>...
+.......
+......>
+v.....>
+......>
+.......
+..vvv..") |> read_cucumbers()
+
+  end <- create_test_file(">......
+..v....
+..>.v..
+.>.v...
+...>...
+.......
+v......") |> read_cucumbers()
+
+  cucumbers <- start
+  for (i in 1:4) {
+    cucumbers <- move_cucumbers(cucumbers)
+  }
+  expect_equal(cucumbers, end)
+})
+
+test_that(test_name(day = 25, part = 1), {
+  start <- create_test_file("v...>>.vv>
 .vv>>.vv..
 >>.>v>...v
 >>v>>.>.v.
@@ -6,114 +56,11 @@ v>v.vv.v..
 >.>>..v...
 .vv..>.>v.
 v.v..>>v.v
-....v..v.>")
+....v..v.>") |> read_cucumbers()
 
-file2 <- create_test_file("...>>>>>...")
+  expect_true(find_terminal(start) == 58)
+})
 
-file3 <- create_test_file("..........
-.>v....v..
-.......>..
-..........")
-
-cucumbers <- read_cucumbers(file3)
-
-move <- function(cucumbers, direction) {
-  # extract matrices of eastward- and southward-moving cucumbers
-  e <- cucumbers$east
-  s <- cucumbers$south
-
-  ##############################
-  # eastward movement first
-
-  # add a new dummy right east column wrap
-  e <- cbind(e, e[, 1])
-  # e <- e[1:2, , drop = FALSE]
-  e
-
-  # similarly, add a new right south column wrap
-  s <- cbind(s, s[, 1])
-  # s <- s[1:2, , drop = FALSE]
-  s
-
-  # get indicators of cucumbers which moved left using a vectorized matrix operation
-  emoving <- (t(diff(t(e | s))) == -1) & e[, -ncol(e)]
-  emoving
-
-  # those who don't move remain static, by definition
-  estatic <- e[, -ncol(e)] & !emoving
-  estatic
-
-  # careful, we can't afford to lose cucumbers!
-  stopifnot(sum(e) == sum(emoving) + sum(estatic))
-
-  # shift eastward-moving cucumbers to their new indices
-  eshifted <- emoving[, c(ncol(emoving), 1:(ncol(emoving) - 1)), drop = FALSE]
-  eshifted
-
-  # combine the matrices of static and moved cucumbers back to a single matrix
-  e <- estatic | eshifted
-
-  ##############################
-  # southward movement next
-
-  # remove the dummy right column
-  s <- s[, -ncol(s)]
-
-  # add a new dummy bottom east row wrap
-  e <- rbind(e, e[1, ])
-  # e <- e[1:2, , drop = FALSE]
-  e
-
-  # similarly, add a new bottom south row wrap
-  s <- rbind(s, s[1, ])
-  # s <- s[1:2, , drop = FALSE]
-  s
-
-  # get indicators of cucumbers which moved south using a vectorized matrix operation
-  smoving <- (diff(e | s) == -1) & s[-nrow(s), ]
-  smoving
-
-  # those who don't move remain static, by definition
-  sstatic <- s[-nrow(s), ] & !smoving
-  sstatic
-
-  # careful, we can't afford to lose cucumbers!
-  stopifnot(sum(s) == sum(smoving) + sum(sstatic))
-
-  # shift southward-moving cucumbers to their new indices
-  sshifted <- smoving[c(nrow(smoving), 1:(nrow(smoving) - 1)), , drop = FALSE]
-  sshifted
-
-  # combine the matrices of static and moved cucumbers back to a single matrix
-  s <- sstatic | sshifted
-
-  list(east = e[-nrow(e), , drop = FALSE], south = s)
-}
-
-cucumbers
-move(.Last.value)
-move(.Last.value)
-
-
-
-# YOU LEFT AT A STAGE IN WHICH THE SHIFTING OF EASTWARD CUCUMBERS SEEMS
-# TO WORK CORRECTLY (THE COUPLE OF LINES ABOVE)--YOU GET true WHERE A
-# CUCUMBER COULD'VE MOVED EASTWARD--BUT EVERYTHING ELSE IS false WHICH
-# IS OBVIOUSLY WRONG (SOME CUCUMBERS CANNOT MOVE BUT THEY SHOULDN'T
-# BE MARKED AS false -- THEY SHOULD BE PERHAPS COMPUTED SEPARATELY AND
-# THEN MERGED WITH THOSE THAT MOVED USING THE | OPERATOR?)
-
-
-
-
-
-
-
-
-# test_that(test_name(day = 25, part = 1), {
-#   expect_true( == )
-# })
-#
 # test_that(test_name(day = 25, part = 2), {
 #   expect_true( == )
 # })

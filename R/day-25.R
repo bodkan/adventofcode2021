@@ -36,7 +36,7 @@ move_cucumbers <- function(cucumbers) {
   estatic
 
   # careful, we can't afford to lose cucumbers!
-  stopifnot(sum(e) == sum(emoving) + sum(estatic))
+  stopifnot(sum(cucumbers$east) == sum(emoving) + sum(estatic))
 
   # shift eastward-moving cucumbers to their new indices
   # (unique-ing the column matrix indices to take care of one-column cases)
@@ -73,7 +73,7 @@ move_cucumbers <- function(cucumbers) {
   sstatic
 
   # careful, we can't afford to lose cucumbers!
-  stopifnot(sum(s) == sum(smoving) + sum(sstatic))
+  stopifnot(sum(cucumbers$south) == sum(smoving) + sum(sstatic))
 
   # shift southward-moving cucumbers to their new indices
   # (unique-ing the row matrix indices to take care of one-row cases)
@@ -84,4 +84,21 @@ move_cucumbers <- function(cucumbers) {
   s <- sstatic | sshifted
 
   list(east = e[-nrow(e), , drop = FALSE], south = s)
+}
+
+# Get the number of iterations needed for cucumbers to remain locked
+# in their places
+find_terminal <- function(cucumbers) {
+  i <- 1
+  current <- cucumbers
+  repeat {
+    following <- move_cucumbers(current)
+
+    if (all(current$east == following$east) && all(current$south == following$south))
+      break
+
+    current <- following
+    i <- i + 1
+  }
+  i
 }

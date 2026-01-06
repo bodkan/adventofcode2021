@@ -2,7 +2,7 @@ suppressMessages(devtools::load_all("."))
 
 input_file <- system.file("extdata/day-25.txt", package = "adventofcode2021")
 
-part1 <-
+part1 <- read_cucumbers(input_file) |> find_terminal()
 
 print_result(day = 25, part = 1, part1)
 check_answer(day = 25, part = 1, part1)

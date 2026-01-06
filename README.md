@@ -47,7 +47,7 @@ into a "boardgame" and we solved it as a family activity. :)
 
 Several reasons. First, R is my favourite programming language. There, I said it.
 
-Second, I spend nearly all time at my job doing data scienceh&mdash;nearly
+Second, I spend nearly all time at my job doing data science&mdash;nearly
 everything I work with on a daily basis takes form of a (gigantic) table, and
 the purpose of my work is to produce figures, statistical models, and gain
 scientific insights. Advent of Code presents a very different class of problems

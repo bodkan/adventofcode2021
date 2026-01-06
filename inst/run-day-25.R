@@ -7,9 +7,8 @@ part1 <- read_cucumbers(input_file) |> find_terminal()
 print_result(day = 25, part = 1, part1)
 check_answer(day = 25, part = 1, part1)
 
-part2 <-
+part2 <- ":)"
 
 print_result(day = 25, part = 2, part2)
-check_answer(day = 25, part = 2, part2)
 
 print_sep()

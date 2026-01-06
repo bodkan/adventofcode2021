@@ -72,6 +72,7 @@ check_answer <- function(day, part, result) {
     "22-1" = 607573,
     "22-2" = 1267133912086024,
     "24-1" = 97919997299495,
+    "24-2" = 51619131181131,
     "25-1" = 513
   )
   if (!all(answers[sprintf("%d-%d", day, part)][[1]] == result))
